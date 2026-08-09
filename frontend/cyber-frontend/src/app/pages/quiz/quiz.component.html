@@ -1,0 +1,36 @@
+<div class="quiz-container">
+  <a [routerLink]="['/courses']" class="back-link">← Back to Courses</a>
+
+  <div *ngIf="quiz">
+    <h2>{{ quiz.title }}</h2>
+
+    <!-- Result view -->
+    <div *ngIf="result" class="result-box" [class.passed]="result.passed" [class.failed]="!result.passed">
+      <h3>{{ result.passed ? '✅ Passed!' : '❌ Not passed' }}</h3>
+      <p>Your score: <strong>{{ result.score }}%</strong> ({{ result.correct }} / {{ result.total }} correct)</p>
+      <p>Passing score: {{ result.passingScore }}%</p>
+    </div>
+
+    <!-- Quiz form (hidden after submitting) -->
+    <div *ngIf="!result">
+      <div *ngFor="let question of quiz.questions; let i = index" class="question-card">
+        <p class="question-text">{{ i + 1 }}. {{ question.text }}</p>
+        <div *ngFor="let answer of question.answers" class="answer-option">
+          <label>
+            <input
+              type="radio"
+              [name]="'q' + question.id"
+              [checked]="selectedAnswers[question.id] === answer.id"
+              (change)="selectAnswer(question.id, answer.id)"
+            />
+            {{ answer.text }}
+          </label>
+        </div>
+      </div>
+
+      <button (click)="submit()" class="submit-btn">Submit Quiz</button>
+    </div>
+
+    <p *ngIf="error" class="error-msg">{{ error }}</p>
+  </div>
+</div>

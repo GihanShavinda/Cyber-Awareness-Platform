@@ -17,7 +17,15 @@
     </div>
     <p *ngIf="lessons.length === 0">No lessons yet.</p>
   </div>
-
+  <h3>Quizzes</h3>
+  <div class="quiz-list">
+   <div *ngFor="let quiz of quizzes" class="quiz-card">
+    <strong>{{ quiz.title }}</strong>
+    <span class="badge">Pass: {{ quiz.passingScore }}%</span>
+    <a [routerLink]="['/quiz', quiz.id]" class="take-btn">Take Quiz →</a>
+   </div>
+    <p *ngIf="quizzes.length === 0">No quizzes yet.</p>
+  </div>
   <div *ngIf="canManage" class="lesson-form">
     <h3>Add a Lesson</h3>
 
