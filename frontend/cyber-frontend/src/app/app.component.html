@@ -1,0 +1,9 @@
+<div style="font-family: sans-serif; padding: 2rem;">
+  <h1>Cyber Awareness Platform</h1>
+  <div *ngIf="health">
+    <p>✅ Status: {{ health.status }}</p>
+    <p>{{ health.message }}</p>
+    <p>Database time: {{ health.dbTime }}</p>
+  </div>
+  <div *ngIf="error" style="color: red;">{{ error }}</div>
+</div>
