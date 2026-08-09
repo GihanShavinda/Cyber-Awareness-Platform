@@ -1,0 +1,5 @@
+<div style="max-width: 600px; margin: 3rem auto; font-family: sans-serif;">
+  <h2>Dashboard</h2>
+  <p *ngIf="user">Welcome, <strong>{{ user.name }}</strong> ({{ user.role }})</p>
+  <button (click)="logout()" style="padding:8px 16px; cursor:pointer;">Logout</button>
+</div>

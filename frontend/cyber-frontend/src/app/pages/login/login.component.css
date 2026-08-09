@@ -1,0 +1,27 @@
+.login-container {
+  max-width: 360px;
+  margin: 4rem auto;
+  font-family: sans-serif;
+}
+
+.login-container label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.error-msg {
+  color: red;
+}
