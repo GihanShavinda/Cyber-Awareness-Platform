@@ -29,15 +29,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "security": {
-              "allowedHosts": []
-            },
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -102,6 +94,6 @@
     }
   },
   "cli": {
-    "analytics": "fecf44f6-da9a-46a5-84d3-3d7e311c02ae"
+    "analytics": "786bb705-0d71-42ca-8f74-bd541188b637"
   }
 }

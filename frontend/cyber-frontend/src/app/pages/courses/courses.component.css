@@ -1,0 +1,50 @@
+.courses-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  font-family: sans-serif;
+}
+
+.course-form {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.course-form label {
+  display: block;
+  margin: 8px 0 4px;
+}
+
+.course-form input,
+.course-form select {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.course-form button {
+  margin-top: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.course-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.badge {
+  display: inline-block;
+  background: #eef;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-right: 6px;
+  font-size: 0.85rem;
+}
+
+.error-msg {
+  color: red;
+}

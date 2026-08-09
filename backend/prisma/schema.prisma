@@ -51,3 +51,16 @@ model User {
   departmentId   Int?
   department     Department?   @relation(fields: [departmentId], references: [id])
 }
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  category    String?
+  difficulty  String?  @default("beginner")
+  duration    Int?     // in minutes
+  status      String   @default("draft")
+  createdBy   Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

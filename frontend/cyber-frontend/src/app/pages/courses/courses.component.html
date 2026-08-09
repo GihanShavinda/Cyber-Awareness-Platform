@@ -1,0 +1,41 @@
+<div class="courses-container">
+  <h2>Courses</h2>
+
+  <div *ngIf="canManage" class="course-form">
+    <h3>Create a Course</h3>
+
+    <label for="title">Title</label>
+    <input id="title" name="title" [(ngModel)]="title" placeholder="Course title" />
+
+    <label for="description">Description</label>
+    <input id="description" name="description" [(ngModel)]="description" placeholder="Short description" />
+
+    <label for="category">Category</label>
+    <input id="category" name="category" [(ngModel)]="category" placeholder="e.g. Email Security" />
+
+    <label for="difficulty">Difficulty</label>
+    <select id="difficulty" name="difficulty" [(ngModel)]="difficulty">
+      <option value="beginner">Beginner</option>
+      <option value="intermediate">Intermediate</option>
+      <option value="advanced">Advanced</option>
+    </select>
+
+    <label for="duration">Duration (minutes)</label>
+    <input id="duration" name="duration" type="number" [(ngModel)]="duration" placeholder="30" />
+
+    <button (click)="createCourse()">Create Course</button>
+  </div>
+
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+
+  <div class="course-list">
+    <div *ngFor="let course of courses" class="course-card">
+      <h4>{{ course.title }}</h4>
+      <p>{{ course.description }}</p>
+      <span class="badge">{{ course.category }}</span>
+      <span class="badge">{{ course.difficulty }}</span>
+      <span class="badge">{{ course.duration }} min</span>
+    </div>
+    <p *ngIf="courses.length === 0">No courses yet.</p>
+  </div>
+</div>
