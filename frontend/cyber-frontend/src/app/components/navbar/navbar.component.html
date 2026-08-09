@@ -1,0 +1,13 @@
+<nav class="navbar">
+  <div class="nav-brand">🛡️ Human Firewall</div>
+
+  <div class="nav-links">
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/courses" routerLinkActive="active">Courses</a>
+  </div>
+
+  <div class="nav-user">
+    <span *ngIf="user">{{ user.name }} ({{ user.role }})</span>
+    <button (click)="logout()">Logout</button>
+  </div>
+</nav>
