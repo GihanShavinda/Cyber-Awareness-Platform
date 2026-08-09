@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const prisma = require('../config/prisma');
+const { authenticate, authorize } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -80,6 +81,16 @@ router.post('/login', async (req, res) => {
     console.error('Login error:', err.message);
     res.status(500).json({ message: 'Something went wrong' });
   }
+});
+
+// Any logged-in user can reach this
+router.get('/me', authenticate, (req, res) => {
+  res.json({ message: 'You are authenticated', user: req.user });
+});
+
+// Only SUPER_ADMIN and ORG_ADMIN can reach this
+router.get('/admin-only', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN'), (req, res) => {
+  res.json({ message: 'Welcome, admin. You have access.' });
 });
 
 module.exports = router;
