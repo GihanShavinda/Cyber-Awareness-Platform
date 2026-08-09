@@ -51,3 +51,62 @@
 
 .pass { color: #10b981; font-weight: bold; }
 .fail { color: #ef4444; font-weight: bold; }
+
+
+.risk-card {
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  color: #fff;
+}
+
+/* Color changes based on risk level */
+.risk-card.VERY_LOW { background: #059669; }
+.risk-card.LOW      { background: #16a34a; }
+.risk-card.MEDIUM   { background: #d97706; }
+.risk-card.HIGH     { background: #dc2626; }
+.risk-card.CRITICAL { background: #991b1b; }
+
+.risk-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.risk-label {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.risk-score {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.risk-score small {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.risk-level-badge {
+  margin-top: 4px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.risk-areas {
+  margin-top: 12px;
+  font-size: 0.9rem;
+}
+
+.risk-areas > div {
+  margin-top: 6px;
+}
+
+.area-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin: 0 4px;
+  background: rgba(255, 255, 255, 0.25);
+}

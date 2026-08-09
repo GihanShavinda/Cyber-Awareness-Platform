@@ -1,7 +1,24 @@
 <div class="dashboard-container">
   <h2>Dashboard</h2>
   <p *ngIf="user">Welcome back, <strong>{{ user.name }}</strong>!</p>
+  <div *ngIf="risk" class="risk-card" [ngClass]="risk.riskLevel">
+  <div class="risk-header">
+    <span class="risk-label">Human Firewall Score</span>
+    <span class="risk-score">{{ risk.securityScore }}<small>/100</small></span>
+  </div>
+  <div class="risk-level-badge">Risk Level: {{ formatRiskLevel(risk.riskLevel) }}</div>
 
+  <div class="risk-areas">
+    <div *ngIf="risk.strongAreas.length > 0">
+      <strong>Strong:</strong>
+      <span *ngFor="let area of risk.strongAreas" class="area-tag strong">{{ area }}</span>
+    </div>
+    <div *ngIf="risk.weakAreas.length > 0">
+      <strong>Needs work:</strong>
+      <span *ngFor="let area of risk.weakAreas" class="area-tag weak">{{ area }}</span>
+    </div>
+  </div>
+</div>
   <div class="stats-row">
     <div class="stat-card">
       <div class="stat-number">{{ averageScore }}%</div>

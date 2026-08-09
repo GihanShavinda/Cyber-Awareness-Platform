@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { ProgressService } from '../../services/progress.service';
+import { RiskService } from '../../services/risk.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,14 +17,17 @@ export class DashboardComponent implements OnInit {
   averageScore = 0;
   completedCount = 0;
   passedCount = 0;
+  risk: any = null;
 
   constructor(
     private authService: AuthService,
-    private progressService: ProgressService
+    private progressService: ProgressService,
+    private riskService: RiskService
   ) {}
 
   ngOnInit(): void {
     this.user = this.authService.getUser();
+
     this.progressService.getMyProgress().subscribe({
       next: (data) => {
         this.progress = data;
@@ -36,5 +40,16 @@ export class DashboardComponent implements OnInit {
       },
       error: () => {},
     });
+
+    this.riskService.getMyRisk().subscribe({
+      next: (data) => (this.risk = data),
+      error: () => {},
+    });
+  }
+
+  // Helper: turn "VERY_LOW" into "Very Low" for display
+  formatRiskLevel(level: string): string {
+    if (!level) return '';
+    return level.replace('_', ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
   }
 }
