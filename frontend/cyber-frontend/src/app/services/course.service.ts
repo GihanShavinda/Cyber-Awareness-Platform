@@ -14,6 +14,10 @@ export class CourseService {
     return this.http.get(this.apiUrl);
   }
 
+  getCourse(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
   createCourse(course: any): Observable<any> {
     return this.http.post(this.apiUrl, course);
   }

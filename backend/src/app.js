@@ -4,6 +4,7 @@ const cors = require('cors');
 const { Pool } = require('pg');
 const authRoutes = require('./routes/auth');
 const courseRoutes = require('./routes/courses');
+const lessonRoutes = require('./routes/lessons');
 
 const app = express();
 app.use(cors());
@@ -12,6 +13,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/lessons', lessonRoutes);
 
 // Database connection pool
 const pool = new Pool({

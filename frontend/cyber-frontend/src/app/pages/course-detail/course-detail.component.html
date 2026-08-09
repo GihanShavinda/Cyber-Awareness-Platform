@@ -1,0 +1,37 @@
+<div class="detail-container">
+  <a routerLink="/courses" class="back-link">← Back to Courses</a>
+
+  <div *ngIf="course">
+    <h2>{{ course.title }}</h2>
+    <p>{{ course.description }}</p>
+    <span class="badge">{{ course.category }}</span>
+    <span class="badge">{{ course.difficulty }}</span>
+  </div>
+
+  <h3>Lessons</h3>
+
+  <div class="lesson-list">
+    <div *ngFor="let lesson of lessons" class="lesson-card">
+      <strong>{{ lesson.orderNumber }}. {{ lesson.title }}</strong>
+      <p>{{ lesson.content }}</p>
+    </div>
+    <p *ngIf="lessons.length === 0">No lessons yet.</p>
+  </div>
+
+  <div *ngIf="canManage" class="lesson-form">
+    <h3>Add a Lesson</h3>
+
+    <label for="lessonTitle">Title</label>
+    <input id="lessonTitle" name="lessonTitle" [(ngModel)]="title" placeholder="Lesson title" />
+
+    <label for="lessonContent">Content</label>
+    <textarea id="lessonContent" name="lessonContent" [(ngModel)]="content" placeholder="Lesson content" rows="3"></textarea>
+
+    <label for="lessonOrder">Order number</label>
+    <input id="lessonOrder" name="lessonOrder" type="number" [(ngModel)]="orderNumber" placeholder="1" />
+
+    <button (click)="addLesson()">Add Lesson</button>
+  </div>
+
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+</div>

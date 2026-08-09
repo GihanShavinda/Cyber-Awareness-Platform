@@ -63,4 +63,17 @@ model Course {
   createdBy   Int?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String?
+  videoUrl    String?
+  orderNumber Int      @default(1)
+  courseId    Int
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
 }
