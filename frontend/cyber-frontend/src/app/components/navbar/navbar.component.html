@@ -4,6 +4,7 @@
   <div class="nav-links">
     <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
     <a routerLink="/courses" routerLinkActive="active">Courses</a>
+    <a *ngIf="isAdmin" routerLink="/admin" routerLinkActive="active">Admin</a>
   </div>
 
   <div class="nav-user">

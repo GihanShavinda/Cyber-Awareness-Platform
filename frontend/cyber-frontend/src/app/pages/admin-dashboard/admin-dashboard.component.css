@@ -1,0 +1,65 @@
+.admin-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  font-family: sans-serif;
+}
+
+.stats-row {
+  display: flex;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.stat-card {
+  flex: 1;
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.stat-label {
+  color: #64748b;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.user-table th,
+.user-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-table th {
+  background: #f8fafc;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.risk-pill {
+  padding: 3px 10px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.risk-pill.VERY_LOW { background: #059669; }
+.risk-pill.LOW      { background: #16a34a; }
+.risk-pill.MEDIUM   { background: #d97706; }
+.risk-pill.HIGH     { background: #dc2626; }
+.risk-pill.CRITICAL { background: #991b1b; }
+
+.error-msg { color: red; }

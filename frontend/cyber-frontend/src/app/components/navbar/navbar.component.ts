@@ -12,9 +12,11 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent {
   user: any;
+  isAdmin = false;
 
   constructor(private authService: AuthService, private router: Router) {
     this.user = this.authService.getUser();
+     this.isAdmin = ['SUPER_ADMIN', 'ORG_ADMIN'].includes(this.user?.role);
   }
 
   logout(): void {
