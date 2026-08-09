@@ -1,5 +1,31 @@
 <div class="dashboard-container">
   <h2>Dashboard</h2>
   <p *ngIf="user">Welcome back, <strong>{{ user.name }}</strong>!</p>
-  <p>This is your security overview. More coming soon.</p>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-number">{{ averageScore }}%</div>
+      <div class="stat-label">Average Score</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ completedCount }}</div>
+      <div class="stat-label">Quizzes Completed</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ passedCount }}</div>
+      <div class="stat-label">Quizzes Passed</div>
+    </div>
+  </div>
+
+  <h3>Recent Activity</h3>
+  <div class="activity-list">
+    <div *ngFor="let item of progress" class="activity-item">
+      <span [class.pass]="item.passed" [class.fail]="!item.passed">
+        {{ item.passed ? '✓' : '✗' }}
+      </span>
+      {{ item.course?.title }} — <strong>{{ item.score }}%</strong>
+      <small>{{ item.completedAt | date:'medium' }}</small>
+    </div>
+    <p *ngIf="progress.length === 0">No activity yet. Take a quiz to get started!</p>
+  </div>
 </div>
