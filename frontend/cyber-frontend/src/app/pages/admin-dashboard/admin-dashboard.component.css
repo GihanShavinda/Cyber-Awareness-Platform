@@ -1,7 +1,12 @@
 .admin-container {
   max-width: 900px;
   margin: 2rem auto;
-  font-family: sans-serif;
+  padding: 0 1rem;
+}
+
+.admin-container h2 {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
 }
 
 .stats-row {
@@ -12,20 +17,28 @@
 
 .stat-card {
   flex: 1;
-  background: #f1f5f9;
-  border-radius: 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   padding: 1.5rem;
   text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 20px var(--accent-dim);
 }
 
 .stat-number {
   font-size: 2rem;
   font-weight: bold;
-  color: #1f2937;
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
 }
 
 .stat-label {
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.85rem;
   margin-top: 4px;
 }
@@ -34,32 +47,52 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 .user-table th,
 .user-table td {
   text-align: left;
-  padding: 10px 12px;
-  border-bottom: 1px solid #eee;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
 }
 
 .user-table th {
-  background: #f8fafc;
-  font-size: 0.85rem;
-  color: #475569;
+  background: var(--bg-elevated);
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
+.user-table td {
+  color: var(--text-secondary);
+}
+
+.user-table tbody tr {
+  transition: background 0.15s;
+}
+
+.user-table tbody tr:hover {
+  background: var(--bg-hover);
+}
+
+/* Risk pills glow by level */
 .risk-pill {
-  padding: 3px 10px;
+  padding: 3px 12px;
   border-radius: 12px;
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-.risk-pill.VERY_LOW { background: #059669; }
-.risk-pill.LOW      { background: #16a34a; }
-.risk-pill.MEDIUM   { background: #d97706; }
-.risk-pill.HIGH     { background: #dc2626; }
-.risk-pill.CRITICAL { background: #991b1b; }
+.risk-pill.VERY_LOW { background: #0a5c4d; box-shadow: 0 0 10px var(--green-glow); }
+.risk-pill.LOW      { background: #12704f; box-shadow: 0 0 8px var(--green-glow); }
+.risk-pill.MEDIUM   { background: #8a5a0f; box-shadow: 0 0 8px rgba(255,180,67,0.35); }
+.risk-pill.HIGH     { background: #8a1428; box-shadow: 0 0 10px var(--danger-glow); }
+.risk-pill.CRITICAL { background: #6b0f1b; box-shadow: 0 0 12px var(--danger-glow); }
 
-.error-msg { color: red; }
+.error-msg { color: var(--danger); }

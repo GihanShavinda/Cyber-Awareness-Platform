@@ -1,0 +1,93 @@
+.inbox-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.inbox-container h2 {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
+}
+
+.hint {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.email-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--warning);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s;
+}
+
+.email-card:hover {
+  box-shadow: 0 0 18px rgba(255, 180, 67, 0.15);
+}
+
+.email-subject {
+  font-weight: bold;
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.email-body {
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.email-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.link-btn {
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+
+.link-btn:hover {
+  box-shadow: 0 0 12px var(--danger-glow);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.report-btn {
+  background: transparent;
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+
+.report-btn:hover {
+  background: var(--green-glow);
+  box-shadow: 0 0 12px var(--green-glow);
+}
+
+.feedback {
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.feedback.good {
+  background: linear-gradient(135deg, #063d33, #0a5c4d);
+  border: 1px solid var(--green);
+  box-shadow: 0 0 16px var(--green-glow);
+  color: #d1fae5;
+}
+
+.feedback.bad {
+  background: linear-gradient(135deg, #5c0d1c, #8a1428);
+  border: 1px solid var(--danger);
+  box-shadow: 0 0 16px var(--danger-glow);
+  color: #fecdd3;
+}
+
+.error-msg { color: var(--danger); }

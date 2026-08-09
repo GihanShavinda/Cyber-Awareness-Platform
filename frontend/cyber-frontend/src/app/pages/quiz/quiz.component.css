@@ -1,61 +1,97 @@
 .quiz-container {
   max-width: 700px;
   margin: 2rem auto;
-  font-family: sans-serif;
+  padding: 0 1rem;
 }
 
 .back-link {
   display: inline-block;
   margin-bottom: 1rem;
-  color: #3b82f6;
+  color: var(--accent);
   text-decoration: none;
 }
 
+.back-link:hover {
+  text-shadow: 0 0 8px var(--accent-glow);
+}
+
+.quiz-container h2 {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
+}
+
 .question-card {
-  border: 1px solid #eee;
-  border-radius: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   padding: 16px;
   margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.question-card:hover {
+  border-color: var(--border-glow);
 }
 
 .question-text {
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
 }
 
 .answer-option {
-  margin: 6px 0;
+  margin: 8px 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.answer-option:hover {
+  background: var(--bg-hover);
 }
 
 .answer-option label {
   cursor: pointer;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.answer-option input[type="radio"] {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
 }
 
 .submit-btn {
-  padding: 10px 20px;
-  cursor: pointer;
-  background: #3b82f6;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+  margin-top: 8px;
 }
 
+/* Result box glows to match pass/fail */
 .result-box {
   padding: 1.5rem;
-  border-radius: 8px;
+  border-radius: var(--radius);
   margin: 1rem 0;
 }
 
 .result-box.passed {
-  background: #ecfdf5;
-  border: 1px solid #10b981;
+  background: linear-gradient(135deg, #063d33, #0a5c4d);
+  border: 1px solid var(--green);
+  box-shadow: 0 0 28px var(--green-glow);
+  color: #fff;
 }
 
 .result-box.failed {
-  background: #fef2f2;
-  border: 1px solid #ef4444;
+  background: linear-gradient(135deg, #5c0d1c, #8a1428);
+  border: 1px solid var(--danger);
+  box-shadow: 0 0 28px var(--danger-glow);
+  color: #fff;
 }
 
-.error-msg {
-  color: red;
+.result-box h3 {
+  margin-top: 0;
+  color: #fff;
 }
+
+.error-msg { color: var(--danger); }

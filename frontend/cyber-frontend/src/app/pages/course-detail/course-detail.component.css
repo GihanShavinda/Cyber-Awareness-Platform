@@ -1,57 +1,128 @@
 .detail-container {
   max-width: 700px;
   margin: 2rem auto;
-  font-family: sans-serif;
+  padding: 0 1rem;
 }
 
 .back-link {
   display: inline-block;
   margin-bottom: 1rem;
-  color: #3b82f6;
+  color: var(--accent);
   text-decoration: none;
+  transition: text-shadow 0.2s;
+}
+
+.back-link:hover {
+  text-shadow: 0 0 8px var(--accent-glow);
+}
+
+.detail-container > div > h2 {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
+  margin-bottom: 6px;
+}
+
+.detail-container h3 {
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-top: 2rem;
 }
 
 .lesson-card {
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
   margin-bottom: 10px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.lesson-card:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 16px var(--accent-dim);
+}
+
+.lesson-card strong {
+  color: var(--text-primary);
+}
+
+.lesson-card p {
+  color: var(--text-secondary);
+  margin: 8px 0 0;
+}
+
+/* Quiz list on this page */
+.quiz-list .quiz-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-card strong {
+  color: var(--text-primary);
+}
+
+.take-btn {
+  margin-left: auto;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.take-btn:hover {
+  background: var(--accent-dim);
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .lesson-form {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  border-radius: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 1.25rem;
+  border-radius: var(--radius);
   margin-top: 2rem;
+}
+
+.lesson-form h3 {
+  margin-top: 0;
+  border: none;
+  color: var(--accent);
 }
 
 .lesson-form label {
   display: block;
-  margin: 8px 0 4px;
+  margin: 10px 0 4px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 .lesson-form input,
 .lesson-form textarea {
   width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
 }
 
 .lesson-form button {
-  margin-top: 12px;
-  padding: 10px 16px;
-  cursor: pointer;
+  margin-top: 14px;
 }
 
 .badge {
   display: inline-block;
-  background: #eef;
-  padding: 2px 8px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  padding: 2px 10px;
   border-radius: 12px;
   margin-right: 6px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  border: 1px solid var(--border-glow);
 }
 
-.error-msg {
-  color: red;
-}
+.error-msg { color: var(--danger); }

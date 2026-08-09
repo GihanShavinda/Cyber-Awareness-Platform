@@ -1,27 +1,38 @@
 .login-container {
-  max-width: 360px;
-  margin: 4rem auto;
-  font-family: sans-serif;
+  max-width: 380px;
+  margin: 6rem auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: 0 0 40px rgba(0, 229, 199, 0.1);
+}
+
+.login-container h2 {
+  text-align: center;
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
+  margin-top: 0;
 }
 
 .login-container label {
   display: block;
-  margin-bottom: 4px;
+  margin: 12px 0 4px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 .login-container input {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 12px;
-  box-sizing: border-box;
 }
 
 .login-container button {
   width: 100%;
-  padding: 10px;
-  cursor: pointer;
+  margin-top: 20px;
 }
 
 .error-msg {
-  color: red;
+  color: var(--danger);
+  text-align: center;
+  margin-top: 12px;
 }

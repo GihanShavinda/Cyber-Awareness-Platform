@@ -1,0 +1,24 @@
+<div class="inbox-container">
+  <h2>📥 Inbox</h2>
+  <p class="hint">Review each message carefully. Some may not be what they seem.</p>
+
+  <div *ngFor="let mail of campaigns" class="email-card">
+    <div class="email-subject">{{ mail.emailSubject }}</div>
+    <div class="email-body">{{ mail.emailBody }}</div>
+
+    <div *ngIf="!feedback[mail.id]" class="email-actions">
+      <button class="link-btn" (click)="respond(mail.id, 'CLICKED')">Click the link</button>
+      <button class="report-btn" (click)="respond(mail.id, 'REPORTED')">🚩 Report as phishing</button>
+    </div>
+
+    <div *ngIf="feedback[mail.id]"
+         class="feedback"
+         [class.good]="feedback[mail.id].eventType === 'REPORT_SUBMITTED'"
+         [class.bad]="feedback[mail.id].eventType === 'LINK_CLICKED'">
+      {{ feedback[mail.id].message }}
+    </div>
+  </div>
+
+  <p *ngIf="campaigns.length === 0">No messages in your inbox.</p>
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+</div>

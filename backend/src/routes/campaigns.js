@@ -65,4 +65,56 @@ router.get('/:id/results', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN', '
   }
 });
 
+// GET active campaigns for the logged-in user to "receive" (any logged-in user)
+router.get('/inbox/me', authenticate, async (req, res) => {
+  try {
+    const campaigns = await prisma.campaign.findMany({
+      where: { status: 'active' },
+      select: { id: true, emailSubject: true, emailBody: true },
+    });
+    res.json(campaigns);
+  } catch (err) {
+    console.error('Inbox error:', err.message);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+// RECORD a user's response to a campaign (any logged-in user)
+router.post('/:id/respond', authenticate, async (req, res) => {
+  try {
+    const { action } = req.body; // "CLICKED" or "REPORTED"
+
+    const eventTypeMap = {
+      CLICKED: 'LINK_CLICKED',
+      REPORTED: 'REPORT_SUBMITTED',
+      OPENED: 'EMAIL_OPENED',
+    };
+    const eventType = eventTypeMap[action];
+    if (!eventType) {
+      return res.status(400).json({ message: 'Invalid action' });
+    }
+
+    await prisma.simulationEvent.create({
+      data: {
+        campaignId: Number(req.params.id),
+        userId: req.user.userId,
+        eventType,
+      },
+    });
+
+    // Friendly feedback depending on what they did
+    const message =
+      eventType === 'LINK_CLICKED'
+        ? 'This was a simulated phishing test — and you clicked the link. In a real attack, this could have compromised your account. Always verify sender addresses and never click urgent links.'
+        : eventType === 'REPORT_SUBMITTED'
+        ? 'Well done! You correctly reported this as phishing. This is exactly the right response.'
+        : 'Event recorded.';
+
+    res.json({ eventType, message });
+  } catch (err) {
+    console.error('Respond error:', err.message);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
 module.exports = router;

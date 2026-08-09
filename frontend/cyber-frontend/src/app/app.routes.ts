@@ -7,6 +7,7 @@ import { authGuard } from './guards/auth.guard';
 import { QuizComponent } from './pages/quiz/quiz.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { adminGuard } from './guards/admin.guard';
+import { InboxComponent } from './pages/inbox/inbox.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -16,4 +17,5 @@ export const routes: Routes = [
   { path: 'courses/:id', component: CourseDetailComponent, canActivate: [authGuard] },
   { path: 'quiz/:id', component: QuizComponent, canActivate: [authGuard] },
   { path: 'admin', component: AdminDashboardComponent, canActivate: [authGuard, adminGuard] },
+  { path: 'inbox', component: InboxComponent, canActivate: [authGuard] },
 ];
