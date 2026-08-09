@@ -123,3 +123,25 @@ model TrainingProgress {
   user         User     @relation(fields: [userId], references: [id])
   course       Course   @relation(fields: [courseId], references: [id])
 }
+
+model Campaign {
+  id           Int                @id @default(autoincrement())
+  name         String
+  description  String?
+  emailSubject String
+  emailBody    String
+  difficulty   String             @default("medium")
+  status       String             @default("draft")
+  createdBy    Int?
+  createdAt    DateTime           @default(now())
+  events       SimulationEvent[]
+}
+
+model SimulationEvent {
+  id         Int      @id @default(autoincrement())
+  campaignId Int
+  userId     Int
+  eventType  String   // EMAIL_SENT, EMAIL_OPENED, LINK_CLICKED, REPORT_SUBMITTED, CREDENTIAL_ATTEMPT
+  timestamp  DateTime @default(now())
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+}

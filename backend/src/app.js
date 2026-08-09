@@ -9,6 +9,7 @@ const quizRoutes = require('./routes/quizzes');
 const progressRoutes = require('./routes/progress');
 const riskRoutes = require('./routes/risk');
 const adminRoutes = require('./routes/admin');
+const campaignRoutes = require('./routes/campaigns');
 
 const app = express();
 app.use(cors());
@@ -22,6 +23,7 @@ app.use('/api/quizzes', quizRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/risk', riskRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/campaigns', campaignRoutes);
 
 // Database connection pool
 const pool = new Pool({
