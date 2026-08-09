@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/overview', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN'), async (req, res) => {
   try {
     // Get all users with their progress + course categories
-    const users = await prisma.user.findMany({
+   const users = await prisma.user.findMany({
       include: {
         progress: {
           include: { course: { select: { title: true, category: true } } },
@@ -17,9 +17,12 @@ router.get('/overview', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN'), asy
       },
     });
 
-    // Compute each user's risk
+    // Fetch all simulation events once, then group by user
+    const allEvents = await prisma.simulationEvent.findMany();
+
     const userRisks = users.map((u) => {
-      const risk = calculateRisk(u.progress);
+      const userEvents = allEvents.filter((e) => e.userId === u.id);
+      const risk = calculateRisk(u.progress, userEvents);
       return {
         id: u.id,
         name: u.name,
