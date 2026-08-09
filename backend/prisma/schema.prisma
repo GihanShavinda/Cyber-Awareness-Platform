@@ -50,6 +50,8 @@ model User {
 
   departmentId   Int?
   department     Department?   @relation(fields: [departmentId], references: [id])
+
+  progress       TrainingProgress[]
 }
 
 model Course {
@@ -66,6 +68,7 @@ model Course {
 
   lessons     Lesson[]
   quizzes     Quiz[]
+  progress    TrainingProgress[]
 }
 
 model Lesson {
@@ -105,4 +108,18 @@ model Answer {
   explanation String?
   questionId  Int
   question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model TrainingProgress {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  courseId     Int
+  quizId       Int?
+  score        Int?
+  passed       Boolean  @default(false)
+  status       String   @default("in_progress")
+  completedAt  DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id])
+  course       Course   @relation(fields: [courseId], references: [id])
 }

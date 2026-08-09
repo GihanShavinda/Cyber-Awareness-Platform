@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const courseRoutes = require('./routes/courses');
 const lessonRoutes = require('./routes/lessons');
 const quizRoutes = require('./routes/quizzes');
+const progressRoutes = require('./routes/progress');
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/quizzes', quizRoutes);
+app.use('/api/progress', progressRoutes);
 
 // Database connection pool
 const pool = new Pool({

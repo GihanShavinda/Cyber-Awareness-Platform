@@ -106,6 +106,18 @@ router.post('/:id/submit', authenticate, async (req, res) => {
 
     const score = total > 0 ? Math.round((correct / total) * 100) : 0;
     const passed = score >= quiz.passingScore;
+    
+    // Save this attempt as a progress record
+    await prisma.trainingProgress.create({
+      data: {
+        userId: req.user.userId,
+        courseId: quiz.courseId,
+        quizId: quiz.id,
+        score,
+        passed,
+        status: 'completed',
+      },
+    });
 
     res.json({
       score,
@@ -114,6 +126,7 @@ router.post('/:id/submit', authenticate, async (req, res) => {
       passingScore: quiz.passingScore,
       passed,
     });
+
   } catch (err) {
     console.error('Submit quiz error:', err.message);
     res.status(500).json({ message: 'Something went wrong' });
