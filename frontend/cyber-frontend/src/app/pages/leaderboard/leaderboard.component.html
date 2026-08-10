@@ -1,0 +1,23 @@
+<div class="leaderboard-container">
+  <h2>🏆 Leaderboard</h2>
+  <p class="subtitle">Top security champions, ranked by points earned.</p>
+
+  <div class="leaderboard-list">
+    <div *ngFor="let player of players; let i = index"
+         class="player-row"
+         [class.top]="i < 3"
+         [class.me]="player.id === currentUserId">
+      <div class="rank">{{ medal(i) }}</div>
+      <div class="player-name">
+        {{ player.name }}
+        <span *ngIf="player.id === currentUserId" class="you-tag">You</span>
+      </div>
+      <div class="player-level">Lv {{ player.level }}</div>
+      <div class="player-badges">{{ player.badgeCount }} 🎖️</div>
+      <div class="player-points">{{ player.points }} pts</div>
+    </div>
+  </div>
+
+  <p *ngIf="players.length === 0">No players yet.</p>
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+</div>

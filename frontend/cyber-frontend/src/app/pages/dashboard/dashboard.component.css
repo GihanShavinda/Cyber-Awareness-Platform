@@ -126,3 +126,94 @@
 
 .pass { color: var(--green); font-weight: bold; text-shadow: 0 0 8px var(--green-glow); }
 .fail { color: var(--danger); font-weight: bold; text-shadow: 0 0 8px var(--danger-glow); }
+
+
+.game-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.game-top {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.level-badge {
+  text-align: center;
+  background: linear-gradient(135deg, var(--violet), #7c3aed);
+  border-radius: var(--radius);
+  padding: 12px 20px;
+  box-shadow: 0 0 20px var(--violet-glow);
+}
+
+.level-num {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  line-height: 1;
+}
+
+.level-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.85);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.points-info {
+  flex: 1;
+}
+
+.points-num {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
+}
+
+.points-next {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 4px 0 8px;
+}
+
+.points-bar {
+  height: 8px;
+  background: var(--bg-elevated);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.points-fill {
+  height: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transition: width 0.4s;
+}
+
+.badges {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badge-chip {
+  background: var(--accent-dim);
+  border: 1px solid var(--border-glow);
+  color: var(--text-primary);
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  cursor: default;
+}
+
+.no-badges {
+  margin-top: 1rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}

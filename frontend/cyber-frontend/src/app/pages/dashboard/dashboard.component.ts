@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { ProgressService } from '../../services/progress.service';
 import { RiskService } from '../../services/risk.service';
+import { GamificationService } from '../../services/gamification.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,11 +19,13 @@ export class DashboardComponent implements OnInit {
   completedCount = 0;
   passedCount = 0;
   risk: any = null;
+  gameStats: any = null;
 
   constructor(
     private authService: AuthService,
     private progressService: ProgressService,
-    private riskService: RiskService
+    private riskService: RiskService,
+    private gamificationService: GamificationService
   ) {}
 
   ngOnInit(): void {
@@ -45,9 +48,13 @@ export class DashboardComponent implements OnInit {
       next: (data) => (this.risk = data),
       error: () => {},
     });
+
+    this.gamificationService.getMyStats().subscribe({
+      next: (data) => (this.gameStats = data),
+      error: () => {},
+    });
   }
 
-  // Helper: turn "VERY_LOW" into "Very Low" for display
   formatRiskLevel(level: string): string {
     if (!level) return '';
     return level.replace('_', ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());

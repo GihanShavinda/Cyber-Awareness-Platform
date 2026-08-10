@@ -19,6 +19,32 @@
     </div>
   </div>
 </div>
+
+<div *ngIf="gameStats" class="game-card">
+  <div class="game-top">
+    <div class="level-badge">
+      <div class="level-num">{{ gameStats.level }}</div>
+      <div class="level-label">Level</div>
+    </div>
+    <div class="points-info">
+      <div class="points-num">{{ gameStats.points }} pts</div>
+      <div class="points-next">{{ 100 - (gameStats.points % 100) }} pts to next level</div>
+      <div class="points-bar">
+        <div class="points-fill" [style.width.%]="gameStats.points % 100"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badges" *ngIf="gameStats.badges.length > 0">
+    <span *ngFor="let badge of gameStats.badges" class="badge-chip" [title]="badge.desc">
+      {{ badge.icon }} {{ badge.name }}
+    </span>
+  </div>
+  <p *ngIf="gameStats.badges.length === 0" class="no-badges">
+    No badges yet — take a quiz or report phishing to earn your first!
+  </p>
+</div>
+
   <div class="stats-row">
     <div class="stat-card">
       <div class="stat-number">{{ averageScore }}%</div>

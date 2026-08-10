@@ -8,6 +8,7 @@ import { QuizComponent } from './pages/quiz/quiz.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { adminGuard } from './guards/admin.guard';
 import { InboxComponent } from './pages/inbox/inbox.component';
+import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -18,4 +19,5 @@ export const routes: Routes = [
   { path: 'quiz/:id', component: QuizComponent, canActivate: [authGuard] },
   { path: 'admin', component: AdminDashboardComponent, canActivate: [authGuard, adminGuard] },
   { path: 'inbox', component: InboxComponent, canActivate: [authGuard] },
+  { path: 'leaderboard', component: LeaderboardComponent, canActivate: [authGuard] },
 ];
