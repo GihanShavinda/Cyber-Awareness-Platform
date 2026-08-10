@@ -18,6 +18,7 @@ const notificationRoutes = require('./routes/notifications');
 const predictionRoutes = require('./routes/prediction');
 const reportRoutes = require('./routes/reports');
 const auditRoutes = require('./routes/audit');
+const queueTestRoutes = require('./routes/queueTest');
 
 const app = express();
 app.use(cors());
@@ -40,6 +41,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/prediction', predictionRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/audit', auditRoutes);
+app.use('/api/queue', queueTestRoutes);
 
 // Database connection pool
 const pool = new Pool({
