@@ -1,6 +1,7 @@
 const express = require('express');
 const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
+const { notify } = require('../utils/notify');
 
 const router = express.Router();
 
@@ -118,6 +119,15 @@ router.post('/:id/submit', authenticate, async (req, res) => {
         status: 'completed',
       },
     });
+
+    await notify(
+      req.user.userId,
+      passed
+        ? `You passed "${quiz.title}" with ${score}%! 🎉`
+        : `You scored ${score}% on "${quiz.title}". Review and try again.`,
+      passed ? 'success' : 'warning',
+      '/dashboard'
+    );
 
     res.json({
       score,

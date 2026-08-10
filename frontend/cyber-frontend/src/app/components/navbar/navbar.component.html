@@ -1,20 +1,51 @@
 <nav class="navbar">
   <div class="nav-brand">🛡️ Human Firewall</div>
 
-<div class="nav-links">
-  <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-  <a routerLink="/courses" routerLinkActive="active">Courses</a>
-  <a routerLink="/inbox" routerLinkActive="active">Inbox</a>
-  <a routerLink="/report" routerLinkActive="active">Report</a>
-  <a routerLink="/leaderboard" routerLinkActive="active">Leaderboard</a>
-  <a *ngIf="isAdmin" routerLink="/admin" routerLinkActive="active">Admin</a>
-  <a *ngIf="isAdmin" routerLink="/users" routerLinkActive="active">Users</a>
-  <a *ngIf="isAdmin" routerLink="/incidents" routerLinkActive="active">Incidents</a>
-  <a *ngIf="isAdmin" routerLink="/analytics" routerLinkActive="active">Analytics</a>
-</div>
+  <div class="nav-links">
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a routerLink="/courses" routerLinkActive="active">Courses</a>
+    <a routerLink="/inbox" routerLinkActive="active">Inbox</a>
+    <a routerLink="/report" routerLinkActive="active">Report</a>
+    <a routerLink="/leaderboard" routerLinkActive="active">Leaderboard</a>
+
+    <div *ngIf="isAdmin" class="admin-dropdown">
+      <button class="admin-toggle" (click)="toggleAdminMenu()">Admin ▾</button>
+      <div class="admin-menu" *ngIf="adminMenuOpen" (click)="closeAdminMenu()">
+        <a routerLink="/admin" routerLinkActive="active">Overview</a>
+        <a routerLink="/users" routerLinkActive="active">Users</a>
+        <a routerLink="/incidents" routerLinkActive="active">Incidents</a>
+        <a routerLink="/analytics" routerLinkActive="active">Analytics</a>
+      </div>
+    </div>
+  </div>
 
   <div class="nav-user">
-    <span *ngIf="user">{{ user.name }} ({{ user.role }})</span>
-    <button (click)="logout()">Logout</button>
+    <div class="bell-wrap">
+      <button class="bell-btn" (click)="toggleBell()" aria-label="Notifications">
+        🔔
+        <span *ngIf="unreadCount > 0" class="bell-badge">{{ unreadCount }}</span>
+      </button>
+
+      <div class="bell-menu" *ngIf="bellOpen">
+        <div class="bell-header">
+          <strong>Notifications</strong>
+          <button *ngIf="unreadCount > 0" class="mark-all" (click)="markAllRead()">Mark all read</button>
+        </div>
+        <div class="bell-list">
+          <div *ngFor="let n of notifications"
+               class="bell-item"
+               [class.unread]="!n.isRead"
+               [ngClass]="n.type"
+               (click)="onNotificationClick(n)">
+            <div class="bell-msg">{{ n.message }}</div>
+            <div class="bell-time">{{ n.createdAt | date:'short' }}</div>
+          </div>
+          <p *ngIf="notifications.length === 0" class="bell-empty">No notifications yet.</p>
+        </div>
+      </div>
+    </div>
+
+    <span class="user-name" *ngIf="user">{{ user.name }} ({{ user.role }})</span>
+    <button class="logout-btn" (click)="logout()">Logout</button>
   </div>
 </nav>

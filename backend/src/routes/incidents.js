@@ -1,6 +1,7 @@
 const express = require('express');
 const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
+const { notify } = require('../utils/notify');
 
 const router = express.Router();
 
@@ -63,6 +64,12 @@ router.put('/:id', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN', 'TRAINER'
       where: { id: Number(req.params.id) },
       data: { status, severity, reviewNotes },
     });
+    await notify(
+      incident.reportedById,
+      `Your reported incident "${incident.title}" is now: ${incident.status}`,
+      'info',
+      '/report'
+    );
     res.json(incident);
   } catch (err) {
     console.error('Update incident error:', err.message);

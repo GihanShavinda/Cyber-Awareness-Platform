@@ -2,12 +2,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
   background: rgba(17, 24, 39, 0.85);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 1px 20px rgba(0, 229, 199, 0.08);
   padding: 0 1.5rem;
   height: 60px;
+  position: relative;
+  z-index: 50;
 }
 
 .nav-brand {
@@ -16,53 +19,236 @@
   color: var(--accent);
   text-shadow: 0 0 12px var(--accent-glow);
   letter-spacing: 0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.nav-links a {
+/* Center section: nav links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-links > a {
   color: var(--text-secondary);
   text-decoration: none;
-  margin: 0 14px;
-  padding: 4px 0;
-  transition: color 0.2s;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
   position: relative;
 }
 
-.nav-links a:hover {
+.nav-links > a:hover {
   color: var(--text-primary);
 }
 
-.nav-links a.active {
+.nav-links > a.active {
   color: var(--accent);
   text-shadow: 0 0 8px var(--accent-glow);
 }
 
-.nav-links a.active::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 100%;
-  height: 2px;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent-glow);
-}
-
+/* Right section: bell + user + logout */
 .nav-user {
   display: flex;
   align-items: center;
   gap: 14px;
   font-size: 0.9rem;
   color: var(--text-secondary);
+  flex-shrink: 0;
 }
 
-.nav-user button {
+.user-name {
+  white-space: nowrap;
+}
+
+.logout-btn {
   background: transparent;
   color: var(--accent);
   border: 1px solid var(--accent);
   padding: 6px 14px;
+  white-space: nowrap;
 }
 
-.nav-user button:hover {
+.logout-btn:hover {
   background: var(--accent-dim);
   box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* ---- Admin dropdown ---- */
+.admin-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.admin-toggle {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.admin-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 10px var(--accent-dim);
+}
+
+.admin-menu {
+  position: absolute;
+  top: 130%;
+  left: 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 16px var(--accent-dim);
+  min-width: 160px;
+  padding: 6px;
+  z-index: 100;
+}
+
+.admin-menu a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 5px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.admin-menu a:hover {
+  background: var(--bg-hover);
+  color: var(--accent);
+}
+
+.admin-menu a.active {
+  color: var(--accent);
+}
+
+/* ---- Notification bell ---- */
+.bell-wrap {
+  position: relative;
+}
+
+.bell-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  position: relative;
+  padding: 4px 8px;
+}
+
+.bell-btn:hover {
+  box-shadow: none;
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+.bell-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: bold;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 0 8px var(--danger-glow);
+}
+
+/* Key fix: anchor the dropdown to the RIGHT edge so it opens leftward, into the screen */
+.bell-menu {
+  position: absolute;
+  top: 140%;
+  right: 0;
+  left: auto;
+  width: 320px;
+  max-width: calc(100vw - 40px);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 16px var(--accent-dim);
+  z-index: 200;
+  overflow: hidden;
+}
+
+.bell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bell-header strong {
+  color: var(--text-primary);
+}
+
+.mark-all {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mark-all:hover {
+  box-shadow: none;
+  text-shadow: 0 0 8px var(--accent-glow);
+}
+
+.bell-list {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.bell-item {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+
+.bell-item:hover {
+  background: var(--bg-hover);
+}
+
+.bell-item.unread {
+  background: rgba(0, 229, 199, 0.05);
+}
+
+.bell-item.unread.success { border-left-color: var(--green); }
+.bell-item.unread.warning { border-left-color: var(--warning); }
+.bell-item.unread.alert { border-left-color: var(--danger); }
+.bell-item.unread.info { border-left-color: var(--accent); }
+
+.bell-msg {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.bell-time {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+
+.bell-empty {
+  padding: 20px 14px;
+  color: var(--text-dim);
+  text-align: center;
+  font-size: 0.9rem;
 }

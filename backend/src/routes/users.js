@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
+const { notify } = require('../utils/notify');
 
 const router = express.Router();
 
@@ -63,6 +64,11 @@ router.put('/:id', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN'), async (r
       data: { name, role, status },
       select: { id: true, name: true, email: true, role: true, status: true },
     });
+
+    if (role) {
+      await notify(userId, `Your role has been updated to ${role}.`, 'info', '/dashboard');
+    }
+    
     res.json(user);
   } catch (err) {
     console.error('Update user error:', err.message);

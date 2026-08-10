@@ -53,6 +53,7 @@ model User {
 
   progress       TrainingProgress[]
   incidents      Incident[]
+  notifications  Notification[]
 }
 
 model Course {
@@ -160,4 +161,16 @@ model Incident {
   updatedAt    DateTime @updatedAt
 
   reportedBy   User     @relation(fields: [reportedById], references: [id])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  message   String
+  type      String   @default("info")   // info, success, warning, alert
+  link      String?                       // optional route to navigate to
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id])
 }
