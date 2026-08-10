@@ -1,30 +1,61 @@
 # 🛡️ Cybersecurity Awareness & Human Firewall Platform
 
-An adaptive cybersecurity awareness training platform that goes beyond videos and quizzes. Instead of only asking *"Did the employee complete training?"*, it continuously measures **knowledge, behavior, and attack response** to answer a harder question: *"Can this person actually recognize and respond to a real cyberattack?"*
+An adaptive cybersecurity awareness training platform that measures not just *whether* an employee completed training, but *whether they can actually recognize and respond to a real cyberattack*. It trains users, tests them with simulated phishing, measures their behavior, predicts their risk with machine learning, and turns it all into a single explainable **Human Risk Score** — the "Human Firewall" concept at the heart of the system.
 
-The platform trains users, tests them with simulated attacks, measures their behavior, and turns it all into a single explainable **Human Risk Score** — the "Human Firewall" concept at the core of the system.
+Built as a three-service architecture: an Angular frontend, a Node.js/Express API, and a Python machine-learning microservice, backed by PostgreSQL and Redis.
 
 ---
 
 ## Core concept
 
-**Train → Test → Measure → Adapt**
+**Train → Test → Measure → Predict → Adapt**
 
-A user completes training and quizzes, receives simulated phishing emails, and every action they take (passing a quiz, clicking a phishing link, reporting a suspicious email) feeds a live risk score. Administrators see risk across the whole organization and can identify high-risk users at a glance.
+A user completes training and quizzes, receives simulated phishing emails, and every action they take (passing a quiz, clicking a phishing link, reporting a suspicious email) feeds a live risk score and a machine-learning risk prediction. Administrators see risk across the whole organization, receive AI-driven predictions with explanations, export reports, and manage the platform — with every administrative action audit-logged.
 
 ---
 
 ## Key features
 
-- **Authentication & role-based access control (RBAC)** — JWT-based login with a role hierarchy (Super Admin → Org Admin → Trainer → Manager → Employee). Authorization is enforced on the backend, not just hidden in the UI.
-- **Learning module** — Admins and trainers create courses, each containing lessons and quizzes. Quizzes support scenario-based questions and are scored automatically.
-- **Progress tracking** — Every quiz attempt is saved with score, pass/fail status, and timestamp.
-- **Human Risk Score engine** — Converts a user's quiz performance and phishing behavior into a 0–100 security score mapped to a risk level (Very Low → Critical), with weak/strong area breakdowns.
-- **Phishing simulation** — Admins create simulated phishing campaigns. Users receive them in a simulated inbox and can click or report. Behavior is recorded and (importantly) **no real credentials are ever collected**.
-- **Behavior-driven risk** — Clicking a phishing link raises a user's risk; reporting it lowers it, reflecting real-world security behavior.
-- **Personal dashboard** — Shows a user's Human Firewall Score, stats, and recent activity.
-- **Admin dashboard** — Organization-wide view: total users, average score, high-risk user count, and a per-user risk table.
-- **Cyber dark theme** — A consistent glowing teal/violet/green dark UI built on central CSS design tokens.
+### Training & assessment
+- Role-based authentication (Super Admin -> Org Admin -> Trainer -> Manager -> Employee), enforced on the backend
+- Course management with nested lessons and auto-scored quizzes
+- Server-side quiz scoring with correct answers hidden from the browser (anti-cheat)
+- Progress tracking of every attempt
+
+### The Human Firewall Score
+- 0-100 security score mapped to five risk levels (Very Low -> Critical)
+- Derived from quiz performance and adjusted by phishing behavior
+- Weak/strong area breakdown by category
+
+### Phishing simulation
+- Admin-created simulated phishing campaigns delivered to an in-app inbox
+- Behavioral tracking (clicked vs. reported) with immediate educational feedback
+- **Adaptive difficulty**: each user is served campaigns matched to their readiness level
+- **Scheduled campaigns**: campaigns can be scheduled to activate at a future time via background jobs
+- Safe by design — no real emails, no credential capture
+
+### Machine learning (AI microservice)
+- A trained **XGBoost** model predicts each user's risk level from their behavior
+- **Explainable predictions** — the model returns which factors drove each prediction and their effect
+- Served as an independent Python/FastAPI microservice, integrated with the main app
+- Graceful degradation — the platform keeps working if the ML service is offline
+
+### Engagement
+- Gamification: points, levels, badges, and an organization-wide leaderboard
+- Near-real-time in-app notifications (bell with unread count)
+- Email notifications for key events (welcome, quiz results, incident updates)
+
+### Administration
+- Personal dashboard (risk card, stats, gamification, activity)
+- Admin dashboard (org-wide metrics, per-user risk, AI predictions with explanations)
+- User management (create, role changes, soft-delete deactivation, self-protection)
+- Incident reporting with an admin review queue
+- Analytics dashboard with interactive charts
+- PDF risk report export per user
+- Audit logging of all administrative actions
+
+### Design
+- Consistent glowing cyber dark theme built on central CSS design tokens
 
 ---
 
@@ -33,60 +64,55 @@ A user completes training and quizzes, receives simulated phishing emails, and e
 | Layer | Technology |
 |---|---|
 | Frontend | Angular (standalone components, TypeScript) |
-| Backend | Node.js + Express.js |
+| Charts | Chart.js (ng2-charts) |
+| Backend API | Node.js + Express.js |
 | Database | PostgreSQL |
 | ORM | Prisma |
-| Auth | JWT + bcrypt password hashing |
-| Cache/Infra | Redis (via Docker) |
+| Auth | JWT + bcrypt |
+| Cache / queue | Redis |
+| Background jobs | BullMQ |
+| Email | Nodemailer |
+| PDF | PDFKit |
+| ML service | Python + FastAPI + XGBoost + scikit-learn |
 | Containerization | Docker + Docker Compose |
 
 ---
 
-## Architecture overview
+## Architecture
 
 ```
-Angular (frontend, port 4200)
-        |
-     HTTP / REST  (JWT in Authorization header)
-        |
-Node.js + Express API (port 3000)
-        |
-   Prisma ORM
-        |
-PostgreSQL  +  Redis   (Docker containers)
+Angular frontend (4200)  --HTTP-->  Node.js + Express API (3000)  --Prisma-->  PostgreSQL + Redis (Docker)
+                                            |
+                                            +--HTTP-->  Python ML service (FastAPI + XGBoost, 8000)
+                                            |
+                              BullMQ worker (background jobs: scheduled campaigns)
 ```
 
-The frontend never trusts itself for security: an HTTP interceptor attaches the JWT to every request, route guards protect pages, and the **backend independently verifies the token and role** on every protected endpoint.
+The frontend never trusts itself for security: a JWT interceptor attaches the token to every request, route guards protect pages, and the backend independently verifies token and role on every protected endpoint. The ML service is a specialist microservice the API calls for predictions. A separate worker process consumes background jobs from Redis.
 
 ---
 
 ## Getting started
 
 ### Prerequisites
+- Node.js 18+ and npm
+- Python 3.9+
+- Docker Desktop
+- Angular CLI (npm install -g @angular/cli)
 
-- [Node.js](https://nodejs.org/) 18+ and npm
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [Angular CLI](https://angular.dev/tools/cli) (`npm install -g @angular/cli`)
-
-### 1. Clone the repository
-
+### 1. Clone
 ```bash
 git clone https://github.com/YOUR_USERNAME/cyber-awareness-platform.git
 cd cyber-awareness-platform
 ```
 
-### 2. Start the database and cache
-
-From the project root (Docker Desktop must be running):
-
+### 2. Start database + cache (Docker Desktop must be running)
 ```bash
 docker compose up -d
 ```
+Starts PostgreSQL (5432) and Redis (6379).
 
-This starts PostgreSQL (port 5432) and Redis (port 6379).
-
-### 3. Set up the backend
-
+### 3. Backend API
 ```bash
 cd backend
 npm install
@@ -94,11 +120,9 @@ npx prisma migrate dev
 npx prisma generate
 npm run dev
 ```
+Runs at http://localhost:3000 . Check http://localhost:3000/api/health .
 
-The API runs at `http://localhost:3000`. Verify with `http://localhost:3000/api/health` — it should return a status of `ok`.
-
-Create a `.env` file in `backend/` with:
-
+Create backend/.env:
 ```
 PORT=3000
 DB_HOST=localhost
@@ -108,17 +132,38 @@ DB_PASSWORD=dev_password_change_me
 DB_NAME=cyber_awareness
 DATABASE_URL="postgresql://cyber_admin:dev_password_change_me@localhost:5432/cyber_awareness?schema=public"
 JWT_SECRET=change_this_to_a_long_random_string
+REDIS_HOST=localhost
+REDIS_PORT=6379
+ML_SERVICE_URL=http://localhost:8000
 ```
 
-### 4. Set up the frontend
+### 4. Background worker (separate terminal)
+```bash
+cd backend
+npm run worker
+```
 
+### 5. ML service (separate terminal)
+```bash
+cd ai-service
+python -m venv venv
+.\venv\Scripts\Activate
+pip install -r requirements.txt
+python generate_data.py
+python train_model.py
+uvicorn main:app --reload --port 8000
+```
+Runs at http://localhost:8000 . Interactive docs at http://localhost:8000/docs .
+
+### 6. Frontend (separate terminal)
 ```bash
 cd frontend/cyber-frontend
 npm install
 ng serve
 ```
+Runs at http://localhost:4200 .
 
-The app runs at `http://localhost:4200`.
+> Full setup runs five processes: PostgreSQL/Redis (Docker), the API, the worker, the ML service, and the frontend.
 
 ---
 
@@ -126,80 +171,65 @@ The app runs at `http://localhost:4200`.
 
 ```
 cyber-awareness-platform/
-├── frontend/
-│   └── cyber-frontend/        # Angular application
+├── frontend/cyber-frontend/     # Angular app
 ├── backend/
 │   ├── src/
-│   │   ├── config/            # Prisma client
-│   │   ├── middleware/        # authenticate + authorize (RBAC)
-│   │   ├── routes/            # auth, courses, lessons, quizzes, progress, risk, admin, campaigns
-│   │   ├── utils/             # riskEngine (Human Risk Score logic)
-│   │   └── app.js             # Express entry point
-│   └── prisma/
-│       └── schema.prisma      # Database models
-├── docker-compose.yml         # PostgreSQL + Redis
+│   │   ├── config/              # Prisma + Redis connections
+│   │   ├── middleware/          # authenticate + authorize (RBAC)
+│   │   ├── routes/              # auth, courses, lessons, quizzes, progress,
+│   │   │                        # risk, admin, campaigns, users, incidents,
+│   │   │                        # notifications, gamification, analytics,
+│   │   │                        # prediction, reports, audit
+│   │   ├── utils/               # riskEngine, gamification, adaptiveDifficulty,
+│   │   │                        # mlService, email, audit, notify
+│   │   ├── queues/              # BullMQ campaign queue
+│   │   ├── workers/             # background job worker
+│   │   └── app.js
+│   └── prisma/schema.prisma
+├── ai-service/                  # Python ML microservice
+│   ├── main.py                  # FastAPI app + /predict
+│   ├── generate_data.py         # synthetic data generator
+│   ├── train_model.py           # XGBoost training
+│   └── risk_model.joblib        # trained model
+├── docker-compose.yml
 └── README.md
 ```
 
 ---
 
-## Key API endpoints
+## Machine learning model
 
-| Method | Endpoint | Access | Purpose |
-|---|---|---|---|
-| POST | `/api/auth/register` | Public | Register a user |
-| POST | `/api/auth/login` | Public | Log in, receive JWT |
-| GET | `/api/courses` | Any logged-in | List courses |
-| POST | `/api/courses` | Admin/Trainer | Create a course |
-| GET | `/api/quizzes/:id` | Any logged-in | Get a quiz (correct answers hidden) |
-| POST | `/api/quizzes/:id/submit` | Any logged-in | Submit answers, get scored |
-| GET | `/api/progress/me` | Any logged-in | Own training history |
-| GET | `/api/risk/me` | Any logged-in | Own Human Risk Score |
-| GET | `/api/admin/overview` | Admin only | Organization-wide risk view |
-| POST | `/api/campaigns` | Admin/Trainer | Create a phishing campaign |
-| POST | `/api/campaigns/:id/respond` | Any logged-in | Record click/report behavior |
+- **Algorithm**: XGBoost multi-class classifier
+- **Features**: average quiz score, quizzes taken, phishing links clicked, phishing emails reported, incidents reported
+- **Output**: predicted risk (LOW / MEDIUM / HIGH), confidence, per-class probabilities, and a factor-level explanation
+- **Training data**: synthetically generated (2,000 users) with realistic behavior->risk patterns and noise. In production the model would be retrained on real data.
+- **Test accuracy**: ~82% on held-out data. The most important features learned are phishing clicks and reports — matching security intuition.
 
 ---
 
 ## Security notes
-
-- Passwords are hashed with bcrypt — plain-text passwords are never stored.
-- Quiz correct answers are stripped from API responses so they can't be read in the browser; scoring happens server-side.
-- Phishing simulations never send real emails or capture real credentials — only the behavioral event (clicked / reported) is recorded.
-- All protected routes verify the JWT and the user's role on the server.
+- Passwords hashed with bcrypt; never stored in plain text
+- Quiz correct answers stripped from responses; scoring is server-side
+- Phishing simulations never send real emails or capture credentials
+- All protected routes verify JWT + role on the server
+- User deactivation is a soft-delete (preserves audit trail); users can't lock themselves out
+- All administrative actions are audit-logged
 
 ---
 
 ## Risk scoring model
 
-The Human Risk Score maps a 0–100 security score to a risk level:
-
 | Score | Risk Level |
 |---|---|
-| 81–100 | Very Low |
-| 61–80 | Low |
-| 41–60 | Medium |
-| 21–40 | High |
-| 0–20 | Critical |
+| 81-100 | Very Low |
+| 61-80 | Low |
+| 41-60 | Medium |
+| 21-40 | High |
+| 0-20 | Critical |
 
-A higher score means lower risk. The score is derived from quiz performance and adjusted by phishing behavior (reporting raises it, clicking lowers it), with weak and strong areas surfaced by category.
-
----
-
-## Roadmap / future work
-
-Features designed in the SRS and planned as future extensions:
-
-- Machine-learning risk *prediction* (identifying users likely to become high-risk) using models such as XGBoost / Random Forest
-- Gamification: points, badges, levels, and leaderboards
-- Incident reporting workflow
-- Real email delivery for phishing campaigns (with tracking pixels and safe simulated landing pages)
-- Adaptive phishing difficulty that responds to user performance
-- Real-time admin dashboard updates via WebSocket
-- Compliance and organization benchmarking reports
+Higher score = lower risk. Derived from quiz performance, adjusted by phishing behavior (reporting raises it, clicking lowers it), with weak/strong areas surfaced by category. The ML model provides an independent predictive view alongside this rule-based score.
 
 ---
 
 ## License
-
-This project was developed as a final-year academic project.
+Developed as a final-year academic project.
