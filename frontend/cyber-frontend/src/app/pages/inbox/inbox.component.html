@@ -1,7 +1,11 @@
 <div class="inbox-container">
   <h2>📥 Inbox</h2>
   <p class="hint">Review each message carefully. Some may not be what they seem.</p>
-
+  <div *ngIf="recommendedDifficulty" class="difficulty-banner" [ngClass]="recommendedDifficulty">
+    <span class="diff-label">Your training level:</span>
+    <span class="diff-value">{{ recommendedDifficulty | titlecase }}</span>
+    <span class="diff-reason">{{ reason }}</span>
+  </div>
   <div *ngFor="let mail of campaigns" class="email-card">
     <div class="email-subject">{{ mail.emailSubject }}</div>
     <div class="email-body">{{ mail.emailBody }}</div>

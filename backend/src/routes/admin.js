@@ -2,6 +2,7 @@ const express = require('express');
 const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
 const { calculateRisk } = require('../utils/riskEngine');
+const { recommendDifficulty } = require('../utils/adaptiveDifficulty');
 
 const router = express.Router();
 
@@ -20,9 +21,28 @@ router.get('/overview', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN'), asy
     // Fetch all simulation events once, then group by user
     const allEvents = await prisma.simulationEvent.findMany();
 
+    // const userRisks = users.map((u) => {
+    //   const userEvents = allEvents.filter((e) => e.userId === u.id);
+    //   const risk = calculateRisk(u.progress, userEvents);
+    //   return {
+    //     id: u.id,
+    //     name: u.name,
+    //     email: u.email,
+    //     role: u.role,
+    //     securityScore: risk.securityScore,
+    //     riskLevel: risk.riskLevel,
+    //     quizzesTaken: risk.quizzesTaken,
+    //   };
+    // });
+
     const userRisks = users.map((u) => {
       const userEvents = allEvents.filter((e) => e.userId === u.id);
       const risk = calculateRisk(u.progress, userEvents);
+      const rec = recommendDifficulty({
+        securityScore: risk.securityScore,
+        phishingClicks: risk.phishingClicks,
+        phishingReports: risk.phishingReports,
+      });
       return {
         id: u.id,
         name: u.name,
@@ -31,6 +51,7 @@ router.get('/overview', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN'), asy
         securityScore: risk.securityScore,
         riskLevel: risk.riskLevel,
         quizzesTaken: risk.quizzesTaken,
+        recommendedDifficulty: rec.difficulty,
       };
     });
 

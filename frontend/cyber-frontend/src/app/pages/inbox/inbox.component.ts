@@ -11,6 +11,8 @@ import { CampaignService } from '../../services/campaign.service';
 })
 export class InboxComponent implements OnInit {
   campaigns: any[] = [];
+  recommendedDifficulty = '';
+  reason = '';
   feedback: { [id: number]: any } = {};
   error = '';
 
@@ -18,7 +20,11 @@ export class InboxComponent implements OnInit {
 
   ngOnInit(): void {
     this.campaignService.getInbox().subscribe({
-      next: (data) => (this.campaigns = data),
+      next: (data) => {
+        this.campaigns = data.campaigns || [];
+        this.recommendedDifficulty = data.recommendedDifficulty || '';
+        this.reason = data.reason || '';
+      },
       error: (err) => (this.error = err.error?.message || 'Failed to load inbox'),
     });
   }

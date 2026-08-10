@@ -91,3 +91,36 @@
 }
 
 .error-msg { color: var(--danger); }
+
+.difficulty-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  margin: 1rem 0 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+}
+
+.difficulty-banner.easy { border-left: 4px solid var(--green); }
+.difficulty-banner.medium { border-left: 4px solid var(--warning); }
+.difficulty-banner.hard { border-left: 4px solid var(--danger); }
+
+.diff-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.diff-value {
+  font-weight: bold;
+  color: var(--accent);
+  text-shadow: 0 0 8px var(--accent-glow);
+}
+
+.diff-reason {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  margin-left: auto;
+}

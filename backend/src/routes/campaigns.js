@@ -66,13 +66,50 @@ router.get('/:id/results', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN', '
 });
 
 // GET active campaigns for the logged-in user to "receive" (any logged-in user)
+// router.get('/inbox/me', authenticate, async (req, res) => {
+//   try {
+//     const campaigns = await prisma.campaign.findMany({
+//       where: { status: 'active' },
+//       select: { id: true, emailSubject: true, emailBody: true },
+//     });
+//     res.json(campaigns);
+//   } catch (err) {
+//     console.error('Inbox error:', err.message);
+//     res.status(500).json({ message: 'Something went wrong' });
+//   }
+// });
+// GET active campaigns matched to the user's recommended difficulty
 router.get('/inbox/me', authenticate, async (req, res) => {
   try {
-    const campaigns = await prisma.campaign.findMany({
-      where: { status: 'active' },
-      select: { id: true, emailSubject: true, emailBody: true },
+    // Work out the user's recommended difficulty
+    const { calculateRisk } = require('../utils/riskEngine');
+    const { recommendDifficulty } = require('../utils/adaptiveDifficulty');
+
+    const progress = await prisma.trainingProgress.findMany({ where: { userId: req.user.userId } });
+    const events = await prisma.simulationEvent.findMany({ where: { userId: req.user.userId } });
+    const risk = calculateRisk(progress, events);
+    const rec = recommendDifficulty({
+      securityScore: risk.securityScore,
+      phishingClicks: risk.phishingClicks,
+      phishingReports: risk.phishingReports,
     });
-    res.json(campaigns);
+
+    // Difficulty ordering: a user sees campaigns at or below their level
+    const order = { easy: 1, medium: 2, hard: 3 };
+    const userLevel = order[rec.difficulty];
+
+    const allActive = await prisma.campaign.findMany({
+      where: { status: 'active' },
+      select: { id: true, emailSubject: true, emailBody: true, difficulty: true },
+    });
+
+    const matched = allActive.filter((c) => (order[c.difficulty] || 2) <= userLevel);
+
+    res.json({
+      recommendedDifficulty: rec.difficulty,
+      reason: rec.reason,
+      campaigns: matched,
+    });
   } catch (err) {
     console.error('Inbox error:', err.message);
     res.status(500).json({ message: 'Something went wrong' });
