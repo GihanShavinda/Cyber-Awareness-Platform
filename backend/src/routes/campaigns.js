@@ -2,6 +2,7 @@ const express = require('express');
 const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
 const { logAction } = require('../utils/audit');
+const { campaignQueue } = require('../queues/campaignQueue');
 
 const router = express.Router();
 
@@ -158,6 +159,99 @@ router.post('/:id/respond', authenticate, async (req, res) => {
     res.json({ eventType, message });
   } catch (err) {
     console.error('Respond error:', err.message);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+// SCHEDULE a campaign to activate at a future time — admins/trainers only
+// router.post('/:id/schedule', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN', 'TRAINER'), async (req, res) => {
+//   try {
+//     const campaignId = Number(req.params.id);
+//     const { sendAt } = req.body; // ISO datetime string
+
+//     if (!sendAt) {
+//       return res.status(400).json({ message: 'sendAt (a future date/time) is required' });
+//     }
+
+//     const delayMs = new Date(sendAt).getTime() - Date.now();
+//     if (isNaN(delayMs)) {
+//       return res.status(400).json({ message: 'Invalid date' });
+//     }
+//     if (delayMs < 0) {
+//       return res.status(400).json({ message: 'Scheduled time must be in the future' });
+//     }
+
+//     // Mark the campaign as scheduled (so it's not active yet)
+//     await prisma.campaign.update({
+//       where: { id: campaignId },
+//       data: { status: 'scheduled' },
+//     });
+
+//     // Queue the job with a delay — BullMQ holds it until the time comes
+//     const job = await campaignQueue.add(
+//       'send-campaign',
+//       { campaignId },
+//       { delay: delayMs }
+//     );
+
+//     res.json({
+//       message: 'Campaign scheduled',
+//       jobId: job.id,
+//       sendAt,
+//       willFireInSeconds: Math.round(delayMs / 1000),
+//     });
+//   } catch (err) {
+//     console.error('Schedule error:', err.message);
+//     res.status(500).json({ message: 'Something went wrong' });
+//   }
+// });
+
+// SCHEDULE a campaign to activate in the future — admins/trainers only.
+// Accepts EITHER { minutesFromNow: 1 } (easy) OR { sendAt: "ISO datetime" }.
+router.post('/:id/schedule', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN', 'TRAINER'), async (req, res) => {
+  try {
+    const campaignId = Number(req.params.id);
+    const { sendAt, minutesFromNow } = req.body;
+
+    let delayMs;
+    let fireTime;
+
+    if (minutesFromNow != null) {
+      delayMs = Number(minutesFromNow) * 60 * 1000;
+      fireTime = new Date(Date.now() + delayMs).toISOString();
+    } else if (sendAt) {
+      delayMs = new Date(sendAt).getTime() - Date.now();
+      fireTime = sendAt;
+    } else {
+      return res.status(400).json({ message: 'Provide either minutesFromNow or sendAt' });
+    }
+
+    if (isNaN(delayMs)) {
+      return res.status(400).json({ message: 'Invalid time' });
+    }
+    if (delayMs < 0) {
+      return res.status(400).json({ message: 'Scheduled time must be in the future' });
+    }
+
+    await prisma.campaign.update({
+      where: { id: campaignId },
+      data: { status: 'scheduled' },
+    });
+
+    const job = await campaignQueue.add(
+      'send-campaign',
+      { campaignId },
+      { delay: delayMs }
+    );
+
+    res.json({
+      message: 'Campaign scheduled',
+      jobId: job.id,
+      sendAt: fireTime,
+      willFireInSeconds: Math.round(delayMs / 1000),
+    });
+  } catch (err) {
+    console.error('Schedule error:', err.message);
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
