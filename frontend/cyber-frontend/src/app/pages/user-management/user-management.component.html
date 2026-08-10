@@ -1,0 +1,79 @@
+<div class="um-container">
+  <h2>User Management</h2>
+
+  <!-- Create user form -->
+  <div class="create-form">
+    <h3>Add New User</h3>
+    <div class="form-row">
+      <div class="field">
+        <label for="newName">Full name</label>
+        <input id="newName" name="newName" [(ngModel)]="newName" placeholder="Full name" />
+      </div>
+      <div class="field">
+        <label for="newEmail">Email</label>
+        <input id="newEmail" name="newEmail" [(ngModel)]="newEmail" type="email" placeholder="Email" />
+      </div>
+      <div class="field">
+        <label for="newPassword">Temp password</label>
+        <input id="newPassword" name="newPassword" [(ngModel)]="newPassword" type="password" placeholder="Temp password" />
+      </div>
+      <div class="field">
+        <label for="newRole">Role</label>
+        <select id="newRole" name="newRole" [(ngModel)]="newRole">
+          <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+        </select>
+      </div>
+      <button (click)="createUser()">Create</button>
+    </div>
+  </div>
+
+  <p *ngIf="success" class="success-msg">{{ success }}</p>
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+
+  <!-- User table -->
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users" [class.inactive-row]="user.status === 'inactive'">
+        <td>
+          {{ user.name }}
+          <span *ngIf="user.id === currentUserId" class="you-tag">You</span>
+        </td>
+        <td>{{ user.email }}</td>
+        <td>
+          <select
+            [ngModel]="user.role"
+            (ngModelChange)="changeRole(user, $event)"
+            [disabled]="user.id === currentUserId"
+            name="role-{{ user.id }}"
+            [attr.aria-label]="'Change role for ' + user.name">
+            <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+          </select>
+        </td>
+        <td>
+          <span class="status-pill" [class.active]="user.status === 'active'" [class.inactive]="user.status === 'inactive'">
+            {{ user.status }}
+          </span>
+        </td>
+        <td>
+          <button
+            *ngIf="user.id !== currentUserId"
+            class="toggle-btn"
+            [class.deactivate]="user.status === 'active'"
+            (click)="toggleStatus(user)">
+            {{ user.status === 'active' ? 'Deactivate' : 'Activate' }}
+          </button>
+          <span *ngIf="user.id === currentUserId" class="self-note">—</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

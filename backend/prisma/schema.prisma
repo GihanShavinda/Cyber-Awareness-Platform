@@ -52,6 +52,7 @@ model User {
   department     Department?   @relation(fields: [departmentId], references: [id])
 
   progress       TrainingProgress[]
+  incidents      Incident[]
 }
 
 model Course {
@@ -144,4 +145,19 @@ model SimulationEvent {
   eventType  String   // EMAIL_SENT, EMAIL_OPENED, LINK_CLICKED, REPORT_SUBMITTED, CREDENTIAL_ATTEMPT
   timestamp  DateTime @default(now())
   campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+}
+
+model Incident {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String
+  type         String   @default("phishing")   // phishing, malware, suspicious_email, other
+  severity     String   @default("medium")      // low, medium, high, critical
+  status       String   @default("open")        // open, reviewing, resolved, dismissed
+  reportedById Int
+  reviewNotes  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  reportedBy   User     @relation(fields: [reportedById], references: [id])
 }

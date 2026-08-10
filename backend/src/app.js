@@ -12,6 +12,7 @@ const adminRoutes = require('./routes/admin');
 const campaignRoutes = require('./routes/campaigns');
 const gamificationRoutes = require('./routes/gamification');
 const userRoutes = require('./routes/users');
+const incidentRoutes = require('./routes/incidents');
 
 const app = express();
 app.use(cors());
@@ -28,6 +29,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/campaigns', campaignRoutes);
 app.use('/api/gamification', gamificationRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/incidents', incidentRoutes);
 
 // Database connection pool
 const pool = new Pool({

@@ -1,0 +1,150 @@
+.um-container {
+  max-width: 950px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.um-container h2 {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
+}
+
+.create-form {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.create-form h3 {
+  margin-top: 0;
+  color: var(--accent);
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.form-row input,
+.form-row select {
+  flex: 1;
+  min-width: 140px;
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.user-table th,
+.user-table td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.user-table th {
+  background: var(--bg-elevated);
+  font-size: 0.8rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-table td {
+  color: var(--text-secondary);
+}
+
+.inactive-row {
+  opacity: 0.5;
+}
+
+.user-table select {
+  padding: 6px 8px;
+  font-size: 0.85rem;
+}
+
+.status-pill {
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pill.active {
+  background: var(--green-glow);
+  color: var(--green);
+  border: 1px solid var(--green);
+}
+
+.status-pill.inactive {
+  background: rgba(255,77,109,0.15);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.toggle-btn {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  background: var(--green);
+  color: #04121a;
+}
+
+.toggle-btn.deactivate {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.toggle-btn.deactivate:hover {
+  box-shadow: 0 0 12px var(--danger-glow);
+}
+
+.you-tag {
+  background: var(--violet);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 140px;
+}
+
+.field label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+}
+
+.self-note {
+  color: var(--text-dim);
+}
+
+.success-msg { color: var(--green); }
+.error-msg { color: var(--danger); }
