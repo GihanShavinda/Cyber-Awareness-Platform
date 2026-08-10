@@ -31,6 +31,7 @@
         <th>Risk Level</th>
         <th>Next Sim</th>
         <th>Quizzes</th>
+        <th>Report</th>
       </tr>
     </thead>
     <tbody>
@@ -42,13 +43,16 @@
         <td><span class="risk-pill" [ngClass]="user.riskLevel">{{ formatRiskLevel(user.riskLevel) }}</span></td>
         <td><span class="diff-pill" [ngClass]="user.recommendedDifficulty">{{ user.recommendedDifficulty | titlecase }}</span></td>
         <td>{{ user.quizzesTaken }}</td>
+        <td>
+          <button class="report-btn" (click)="downloadReport(user)">📄 PDF</button>
+        </td>
       </tr>
     </tbody>
   </table>
 
   <p *ngIf="error" class="error-msg">{{ error }}</p>
 
-  <h3>🤖 AI Risk Predictions</h3>
+<h3>🤖 AI Risk Predictions</h3>
   <p *ngIf="!mlAvailable" class="ml-warning">ML service is offline — predictions unavailable.</p>
   <table *ngIf="mlAvailable && predictions.length > 0" class="user-table">
     <thead>
@@ -56,14 +60,39 @@
         <th>Name</th>
         <th>AI Predicted Risk</th>
         <th>Confidence</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let p of predictions">
-        <td>{{ p.name }}</td>
-        <td><span class="risk-pill" [ngClass]="p.predictedRisk">{{ p.predictedRisk }}</span></td>
-        <td>{{ p.confidence !== null ? (p.confidence * 100 | number:'1.0-0') + '%' : '—' }}</td>
-      </tr>
+      <ng-container *ngFor="let p of predictions">
+        <tr>
+          <td>{{ p.name }}</td>
+          <td><span class="risk-pill" [ngClass]="p.predictedRisk">{{ p.predictedRisk }}</span></td>
+          <td>{{ p.confidence !== null ? (p.confidence * 100 | number:'1.0-0') + '%' : '—' }}</td>
+          <td>
+            <button class="why-btn" (click)="toggleExplanation(p.id)">
+              {{ expandedUserId === p.id ? 'Hide' : 'Why?' }}
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="expandedUserId === p.id" class="explain-row">
+          <td colspan="4">
+            <div class="explain-box">
+              <div class="explain-title">Factors driving this prediction:</div>
+              <div *ngFor="let f of p.explanation" class="explain-factor">
+                <span class="factor-name">{{ f.factor }}</span>
+                <span class="factor-value">= {{ f.value }}</span>
+                <span class="factor-effect" [ngClass]="f.effect === 'increases risk' ? 'up' : (f.effect === 'reduces risk' ? 'down' : 'neutral')">
+                  {{ f.effect }}
+                </span>
+                <span class="factor-bar">
+                  <span class="factor-fill" [style.width.%]="f.importance * 100"></span>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
 </div>

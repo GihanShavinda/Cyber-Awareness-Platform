@@ -58,6 +58,7 @@ router.get('/all', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN'), async (r
         email: u.email,
         predictedRisk: prediction ? prediction.predicted_risk : 'UNKNOWN',
         confidence: prediction ? prediction.confidence : null,
+        explanation: prediction ? prediction.explanation : [],
       });
     }
 

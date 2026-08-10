@@ -95,6 +95,8 @@
 .risk-pill.HIGH     { background: #8a1428; box-shadow: 0 0 10px var(--danger-glow); }
 .risk-pill.CRITICAL { background: #6b0f1b; box-shadow: 0 0 12px var(--danger-glow); }
 
+
+
 .error-msg { color: var(--danger); }
 
 .diff-pill {
@@ -111,4 +113,91 @@
 .ml-warning {
   color: var(--warning);
   font-size: 0.9rem;
+}
+
+.why-btn {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+  font-size: 0.8rem;
+}
+
+.why-btn:hover {
+  background: var(--accent-dim);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.explain-row td {
+  background: var(--bg-base);
+}
+
+.explain-box {
+  padding: 12px 16px;
+}
+
+.explain-title {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+.explain-factor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 0.85rem;
+}
+
+.factor-name {
+  color: var(--text-primary);
+  min-width: 170px;
+}
+
+.factor-value {
+  color: var(--text-secondary);
+  min-width: 50px;
+}
+
+.factor-effect {
+  min-width: 110px;
+  font-weight: 600;
+}
+
+.factor-effect.up { color: var(--danger); }
+.factor-effect.down { color: var(--green); }
+.factor-effect.neutral { color: var(--text-dim); }
+
+.factor-bar {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-elevated);
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 200px;
+}
+
+.factor-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.risk-pill.LOW { background: #0a5c4d; box-shadow: 0 0 10px var(--green-glow); }
+.risk-pill.MEDIUM { background: #8a5a0f; box-shadow: 0 0 8px rgba(255,180,67,0.35); }
+.risk-pill.HIGH { background: #8a1428; box-shadow: 0 0 10px var(--danger-glow); }
+
+.report-btn {
+  background: transparent;
+  color: var(--violet);
+  border: 1px solid var(--violet);
+  padding: 4px 12px;
+  font-size: 0.8rem;
+}
+
+.report-btn:hover {
+  background: var(--violet-glow);
+  box-shadow: 0 0 10px var(--violet-glow);
 }

@@ -16,6 +16,11 @@ export class AdminDashboardComponent implements OnInit {
   predictions: any[] = [];
   mlAvailable = true;
   error = '';
+  expandedUserId: number | null = null;
+
+  toggleExplanation(userId: number): void {
+    this.expandedUserId = this.expandedUserId === userId ? null : userId;
+  }
 
   constructor(
     private adminService: AdminService,
@@ -40,5 +45,22 @@ export class AdminDashboardComponent implements OnInit {
   formatRiskLevel(level: string): string {
     if (!level) return '';
     return level.replace('_', ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
+  downloadReport(user: any): void {
+    this.adminService.downloadUserReport(user.id).subscribe({
+      next: (blob) => {
+        // Create a temporary URL for the blob and click it to download
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `risk_report_${user.name.replace(/[^a-z0-9]/gi, '_')}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: () => (this.error = 'Failed to download report'),
+    });
   }
 }
