@@ -1,6 +1,7 @@
 const express = require('express');
 const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
+const { logAction } = require('../utils/audit');
 
 const router = express.Router();
 
@@ -35,6 +36,13 @@ router.post('/', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN', 'TRAINER'),
         createdBy: req.user.userId,
       },
     });
+
+    await logAction(req, 'CAMPAIGN_CREATED', {
+      targetType: 'campaign',
+      targetId: campaign.id,
+      details: `Created phishing campaign "${campaign.name}"`,
+    });
+    
     res.status(201).json(campaign);
   } catch (err) {
     console.error('Create campaign error:', err.message);

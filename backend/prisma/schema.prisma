@@ -174,3 +174,14 @@ model Notification {
 
   user      User     @relation(fields: [userId], references: [id])
 }
+
+model AuditLog {
+  id         Int      @id @default(autoincrement())
+  actorId    Int                          // who performed the action
+  actorName  String                        // stored for easy display
+  action     String                        // e.g. ROLE_CHANGED, USER_DEACTIVATED
+  targetType String?                       // e.g. "user", "incident"
+  targetId   Int?
+  details    String?                       // human-readable summary
+  createdAt  DateTime @default(now())
+}

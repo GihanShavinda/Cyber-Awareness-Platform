@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
 const { notify } = require('../utils/notify');
+const { logAction } = require('../utils/audit');
 
 const router = express.Router();
 
@@ -63,6 +64,24 @@ router.put('/:id', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN'), async (r
       where: { id: userId },
       data: { name, role, status },
       select: { id: true, name: true, email: true, role: true, status: true },
+    });
+
+    await logAction(req, 'USER_UPDATED', {
+      targetType: 'user',
+      targetId: userId,
+      details: `Updated ${user.name}${role ? ` — role set to ${role}` : ''}${status ? `, status ${status}` : ''}`,
+    });
+
+    await logAction(req, 'USER_DEACTIVATED', {
+      targetType: 'user',
+      targetId: userId,
+      details: `Deactivated ${user.name}`,
+    });
+
+    await logAction(req, 'USER_ACTIVATED', {
+      targetType: 'user',
+      targetId: Number(req.params.id),
+      details: `Reactivated ${user.name}`,
     });
 
     if (role) {

@@ -2,6 +2,7 @@ const express = require('express');
 const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
 const { notify } = require('../utils/notify');
+const { logAction } = require('../utils/audit');
 
 const router = express.Router();
 
@@ -64,6 +65,13 @@ router.put('/:id', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN', 'TRAINER'
       where: { id: Number(req.params.id) },
       data: { status, severity, reviewNotes },
     });
+
+    await logAction(req, 'INCIDENT_UPDATED', {
+      targetType: 'incident',
+      targetId: incident.id,
+      details: `Incident "${incident.title}" set to ${incident.status}`,
+    });
+    
     await notify(
       incident.reportedById,
       `Your reported incident "${incident.title}" is now: ${incident.status}`,
