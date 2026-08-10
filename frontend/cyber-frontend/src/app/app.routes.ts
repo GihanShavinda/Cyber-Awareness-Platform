@@ -13,6 +13,7 @@ import { UserManagementComponent } from './pages/user-management/user-management
 import { ReportIncidentComponent } from './pages/report-incident/report-incident.component';
 import { IncidentReviewComponent } from './pages/incident-review/incident-review.component';
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
+import { AuditLogComponent } from './pages/audit-log/audit-log.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -28,4 +29,5 @@ export const routes: Routes = [
   { path: 'report', component: ReportIncidentComponent, canActivate: [authGuard] },
   { path: 'incidents', component: IncidentReviewComponent, canActivate: [authGuard, adminGuard] },
   { path: 'analytics', component: AnalyticsComponent, canActivate: [authGuard, adminGuard] },
+  { path: 'audit', component: AuditLogComponent, canActivate: [authGuard, adminGuard] },
 ];

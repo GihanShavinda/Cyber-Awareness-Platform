@@ -2,6 +2,8 @@ const express = require('express');
 const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
 const { notify } = require('../utils/notify');
+const { sendEmail } = require('../utils/email');
+const { quizResultEmail } = require('../utils/emailTemplates');
 
 const router = express.Router();
 
@@ -128,6 +130,11 @@ router.post('/:id/submit', authenticate, async (req, res) => {
       passed ? 'success' : 'warning',
       '/dashboard'
     );
+
+    const submitter = await prisma.user.findUnique({ where: { id: req.user.userId } });
+    if (submitter) {
+      sendEmail(submitter.email, `Quiz Result: ${quiz.title}`, quizResultEmail(submitter.name, quiz.title, score, passed));
+    }
 
     res.json({
       score,

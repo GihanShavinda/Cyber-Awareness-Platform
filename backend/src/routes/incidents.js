@@ -3,6 +3,8 @@ const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
 const { notify } = require('../utils/notify');
 const { logAction } = require('../utils/audit');
+const { sendEmail } = require('../utils/email');
+const { incidentUpdateEmail } = require('../utils/emailTemplates');
 
 const router = express.Router();
 
@@ -78,6 +80,12 @@ router.put('/:id', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN', 'TRAINER'
       'info',
       '/report'
     );
+
+    const reporter = await prisma.user.findUnique({ where: { id: incident.reportedById } });
+    if (reporter) {
+      sendEmail(reporter.email, 'Your incident report was updated', incidentUpdateEmail(reporter.name, incident.title, incident.status));
+    }
+    
     res.json(incident);
   } catch (err) {
     console.error('Update incident error:', err.message);

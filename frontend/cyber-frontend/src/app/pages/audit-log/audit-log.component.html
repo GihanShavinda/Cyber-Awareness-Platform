@@ -1,0 +1,21 @@
+<div class="audit-container">
+  <h2>📋 Audit Log</h2>
+  <p class="subtitle">A record of all administrative actions on the platform.</p>
+
+  <div class="timeline">
+    <div *ngFor="let log of logs" class="audit-entry" [ngClass]="actionClass(log.action)">
+      <div class="entry-icon">{{ icon(log.action) }}</div>
+      <div class="entry-body">
+        <div class="entry-top">
+          <span class="entry-action">{{ log.action.replace('_', ' ') }}</span>
+          <span class="entry-time">{{ log.createdAt | date:'medium' }}</span>
+        </div>
+        <div class="entry-details">{{ log.details }}</div>
+        <div class="entry-actor">by {{ log.actorName }}</div>
+      </div>
+    </div>
+    <p *ngIf="logs.length === 0">No actions logged yet.</p>
+  </div>
+
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+</div>

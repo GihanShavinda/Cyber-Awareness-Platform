@@ -4,6 +4,8 @@ const prisma = require('../config/prisma');
 const { authenticate, authorize } = require('../middleware/auth');
 const { notify } = require('../utils/notify');
 const { logAction } = require('../utils/audit');
+const { sendEmail } = require('../utils/email');
+const { welcomeEmail } = require('../utils/emailTemplates');
 
 const router = express.Router();
 
@@ -42,6 +44,9 @@ router.post('/', authenticate, authorize('SUPER_ADMIN', 'ORG_ADMIN'), async (req
       data: { name, email, passwordHash, role: role || 'EMPLOYEE' },
       select: { id: true, name: true, email: true, role: true, status: true },
     });
+
+    sendEmail(user.email, 'Welcome to Human Firewall', welcomeEmail(user.name));
+    
     res.status(201).json(user);
   } catch (err) {
     console.error('Create user error:', err.message);
