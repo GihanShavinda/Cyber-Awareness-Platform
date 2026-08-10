@@ -10,6 +10,8 @@ import { adminGuard } from './guards/admin.guard';
 import { InboxComponent } from './pages/inbox/inbox.component';
 import { LeaderboardComponent } from './pages/leaderboard/leaderboard.component';
 import { UserManagementComponent } from './pages/user-management/user-management.component';
+import { ReportIncidentComponent } from './pages/report-incident/report-incident.component';
+import { IncidentReviewComponent } from './pages/incident-review/incident-review.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -22,4 +24,6 @@ export const routes: Routes = [
   { path: 'inbox', component: InboxComponent, canActivate: [authGuard] },
   { path: 'leaderboard', component: LeaderboardComponent, canActivate: [authGuard] },
   { path: 'users', component: UserManagementComponent, canActivate: [authGuard, adminGuard] },
+  { path: 'report', component: ReportIncidentComponent, canActivate: [authGuard] },
+  { path: 'incidents', component: IncidentReviewComponent, canActivate: [authGuard, adminGuard] },
 ];

@@ -1,0 +1,57 @@
+<div class="report-container">
+  <h2>🚨 Report a Security Incident</h2>
+  <p class="subtitle">Spotted something suspicious? Report it here — reporting is always the right move.</p>
+
+  <div class="report-form">
+    <div class="field">
+      <label for="title">What happened?</label>
+      <input id="title" name="title" [(ngModel)]="title" placeholder="Short summary (e.g. Suspicious password reset email)" />
+    </div>
+
+    <div class="field">
+      <label for="description">Details</label>
+      <textarea id="description" name="description" [(ngModel)]="description" rows="4"
+        placeholder="Describe what you saw — sender, links, what felt off..."></textarea>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label for="type">Type</label>
+        <select id="type" name="type" [(ngModel)]="type">
+          <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="severity">Severity</label>
+        <select id="severity" name="severity" [(ngModel)]="severity">
+          <option *ngFor="let s of severities" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+    </div>
+
+    <button (click)="submit()">Submit Report</button>
+
+    <p *ngIf="success" class="success-msg">{{ success }}</p>
+    <p *ngIf="error" class="error-msg">{{ error }}</p>
+  </div>
+
+  <h3>My Reports</h3>
+  <div class="my-reports">
+    <div *ngFor="let inc of myIncidents" class="report-card">
+      <div class="report-head">
+        <strong>{{ inc.title }}</strong>
+        <span class="status-pill" [ngClass]="inc.status">{{ inc.status }}</span>
+      </div>
+      <p class="report-desc">{{ inc.description }}</p>
+      <div class="report-meta">
+        <span class="tag">{{ inc.type }}</span>
+        <span class="tag sev-{{ inc.severity }}">{{ inc.severity }}</span>
+        <span class="date">{{ inc.createdAt | date:'medium' }}</span>
+      </div>
+      <div *ngIf="inc.reviewNotes" class="review-note">
+        <strong>Security team:</strong> {{ inc.reviewNotes }}
+      </div>
+    </div>
+    <p *ngIf="myIncidents.length === 0">You haven't reported anything yet.</p>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="review-container">
+  <h2>🛡️ Incident Review Queue</h2>
+
+  <div *ngIf="stats" class="stats-row">
+    <div class="stat-card"><div class="stat-number">{{ stats.total }}</div><div class="stat-label">Total</div></div>
+    <div class="stat-card"><div class="stat-number">{{ stats.open }}</div><div class="stat-label">Open</div></div>
+    <div class="stat-card"><div class="stat-number">{{ stats.resolved }}</div><div class="stat-label">Resolved</div></div>
+    <div class="stat-card"><div class="stat-number">{{ stats.highSeverity }}</div><div class="stat-label">High Severity</div></div>
+  </div>
+
+  <div class="incident-list">
+    <div *ngFor="let inc of incidents" class="incident-card">
+      <div class="incident-head">
+        <strong>{{ inc.title }}</strong>
+        <span class="tag sev-{{ inc.severity }}">{{ inc.severity }}</span>
+      </div>
+      <p class="incident-desc">{{ inc.description }}</p>
+      <div class="incident-meta">
+        Reported by {{ inc.reportedBy?.name }} ({{ inc.reportedBy?.email }})
+        · {{ inc.createdAt | date:'medium' }} · <span class="tag">{{ inc.type }}</span>
+      </div>
+
+      <div class="incident-actions">
+        <label [attr.for]="'status-' + inc.id">Status:</label>
+        <select [id]="'status-' + inc.id"
+                [ngModel]="inc.status"
+                (ngModelChange)="updateStatus(inc, $event)"
+                [attr.aria-label]="'Status for ' + inc.title">
+          <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+
+      <div class="notes-row">
+        <input [(ngModel)]="inc.reviewNotes"
+               name="notes-{{ inc.id }}"
+               placeholder="Add review notes..."
+               [attr.aria-label]="'Review notes for ' + inc.title" />
+        <button (click)="saveNotes(inc)">Save</button>
+        <span *ngIf="inc._saved" class="saved-tick">✓ Saved</span>
+      </div>
+    </div>
+    <p *ngIf="incidents.length === 0">No incidents reported yet.</p>
+  </div>
+
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+</div>

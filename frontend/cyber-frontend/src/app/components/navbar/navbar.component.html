@@ -1,15 +1,16 @@
 <nav class="navbar">
   <div class="nav-brand">🛡️ Human Firewall</div>
 
-  <div class="nav-links">
-    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-    <a routerLink="/courses" routerLinkActive="active">Courses</a>
-    <a routerLink="/inbox" routerLinkActive="active">Inbox</a>
-    <a routerLink="/leaderboard" routerLinkActive="active">Leaderboard</a>
-    <a *ngIf="isAdmin" routerLink="/admin" routerLinkActive="active">Admin</a>
-    <a *ngIf="isAdmin" routerLink="/users" routerLinkActive="active">Users</a>
-
-  </div>
+<div class="nav-links">
+  <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+  <a routerLink="/courses" routerLinkActive="active">Courses</a>
+  <a routerLink="/inbox" routerLinkActive="active">Inbox</a>
+  <a routerLink="/report" routerLinkActive="active">Report</a>
+  <a routerLink="/leaderboard" routerLinkActive="active">Leaderboard</a>
+  <a *ngIf="isAdmin" routerLink="/admin" routerLinkActive="active">Admin</a>
+  <a *ngIf="isAdmin" routerLink="/users" routerLinkActive="active">Users</a>
+  <a *ngIf="isAdmin" routerLink="/incidents" routerLinkActive="active">Incidents</a>
+</div>
 
   <div class="nav-user">
     <span *ngIf="user">{{ user.name }} ({{ user.role }})</span>
