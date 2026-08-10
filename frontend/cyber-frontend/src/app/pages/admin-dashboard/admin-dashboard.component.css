@@ -107,3 +107,8 @@
 .diff-pill.easy { background: var(--green-glow); color: var(--green); border: 1px solid var(--green); }
 .diff-pill.medium { background: rgba(255,180,67,0.15); color: var(--warning); border: 1px solid var(--warning); }
 .diff-pill.hard { background: rgba(255,77,109,0.15); color: var(--danger); border: 1px solid var(--danger); }
+
+.ml-warning {
+  color: var(--warning);
+  font-size: 0.9rem;
+}

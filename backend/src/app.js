@@ -15,6 +15,7 @@ const userRoutes = require('./routes/users');
 const incidentRoutes = require('./routes/incidents');
 const analyticsRoutes = require('./routes/analytics');
 const notificationRoutes = require('./routes/notifications');
+const predictionRoutes = require('./routes/prediction');
 
 const app = express();
 app.use(cors());
@@ -34,6 +35,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/incidents', incidentRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/prediction', predictionRoutes);
 
 // Database connection pool
 const pool = new Pool({

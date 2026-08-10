@@ -47,4 +47,23 @@
   </table>
 
   <p *ngIf="error" class="error-msg">{{ error }}</p>
+
+  <h3>🤖 AI Risk Predictions</h3>
+  <p *ngIf="!mlAvailable" class="ml-warning">ML service is offline — predictions unavailable.</p>
+  <table *ngIf="mlAvailable && predictions.length > 0" class="user-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>AI Predicted Risk</th>
+        <th>Confidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of predictions">
+        <td>{{ p.name }}</td>
+        <td><span class="risk-pill" [ngClass]="p.predictedRisk">{{ p.predictedRisk }}</span></td>
+        <td>{{ p.confidence !== null ? (p.confidence * 100 | number:'1.0-0') + '%' : '—' }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

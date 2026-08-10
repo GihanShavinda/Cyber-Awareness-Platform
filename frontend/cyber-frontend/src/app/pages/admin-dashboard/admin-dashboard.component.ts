@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../services/admin.service';
+import { PredictionService } from '../../services/prediction.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -12,9 +13,14 @@ import { AdminService } from '../../services/admin.service';
 export class AdminDashboardComponent implements OnInit {
   summary: any = null;
   users: any[] = [];
+  predictions: any[] = [];
+  mlAvailable = true;
   error = '';
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private predictionService: PredictionService
+  ) {}
 
   ngOnInit(): void {
     this.adminService.getOverview().subscribe({
@@ -23,6 +29,11 @@ export class AdminDashboardComponent implements OnInit {
         this.users = data.users;
       },
       error: (err) => (this.error = err.error?.message || 'Failed to load admin data'),
+    });
+
+    this.predictionService.getAllPredictions().subscribe({
+      next: (data) => (this.predictions = data),
+      error: () => (this.mlAvailable = false),
     });
   }
 

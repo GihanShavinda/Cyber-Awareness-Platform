@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { Subscription, interval } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
 
@@ -11,7 +12,7 @@ import { NotificationService } from '../../services/notification.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   user: any;
   isAdmin = false;
   adminMenuOpen = false;
@@ -19,6 +20,8 @@ export class NavbarComponent implements OnInit {
   notifications: any[] = [];
   unreadCount = 0;
   bellOpen = false;
+
+  private pollSub?: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -31,6 +34,13 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadNotifications();
+    // Poll every 15 seconds for new notifications
+    this.pollSub = interval(15000).subscribe(() => this.loadNotifications());
+  }
+
+  ngOnDestroy(): void {
+    // Stop polling when the navbar is removed (e.g. on logout)
+    this.pollSub?.unsubscribe();
   }
 
   loadNotifications(): void {
