@@ -1,0 +1,36 @@
+<div class="analytics-container">
+  <h2>📊 Analytics</h2>
+
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+  <p *ngIf="!loaded && !error" class="loading">Loading charts...</p>
+
+  <div *ngIf="loaded" class="chart-grid">
+    <div class="chart-card">
+      <h3>Risk Distribution</h3>
+      <div class="chart-wrap">
+        <canvas baseChart [type]="'doughnut'" [data]="riskData" [options]="pieOptions"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Avg Score by Category</h3>
+      <div class="chart-wrap">
+        <canvas baseChart [type]="'bar'" [data]="categoryData" [options]="chartOptions"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phishing Behavior</h3>
+      <div class="chart-wrap">
+        <canvas baseChart [type]="'bar'" [data]="phishingData" [options]="chartOptions"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Incident Status</h3>
+      <div class="chart-wrap">
+        <canvas baseChart [type]="'doughnut'" [data]="incidentData" [options]="pieOptions"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
