@@ -14,6 +14,7 @@ import { ReportIncidentComponent } from './pages/report-incident/report-incident
 import { IncidentReviewComponent } from './pages/incident-review/incident-review.component';
 import { AnalyticsComponent } from './pages/analytics/analytics.component';
 import { AuditLogComponent } from './pages/audit-log/audit-log.component';
+import { CampaignsAdminComponent } from './pages/campaigns-admin/campaigns-admin.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -30,4 +31,5 @@ export const routes: Routes = [
   { path: 'incidents', component: IncidentReviewComponent, canActivate: [authGuard, adminGuard] },
   { path: 'analytics', component: AnalyticsComponent, canActivate: [authGuard, adminGuard] },
   { path: 'audit', component: AuditLogComponent, canActivate: [authGuard, adminGuard] },
+  { path: 'campaigns', component: CampaignsAdminComponent, canActivate: [authGuard, adminGuard] },
 ];

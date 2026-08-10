@@ -1,0 +1,107 @@
+.camp-container {
+  max-width: 750px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.camp-container h2 {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent-glow);
+}
+
+.create-form {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.create-form h3 { margin-top: 0; color: var(--accent); }
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.field label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.field input, .field textarea, .field select { width: 100%; }
+
+.camp-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.camp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.camp-head strong { color: var(--text-primary); }
+
+.camp-subject {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 6px 0;
+}
+
+.camp-meta { margin-bottom: 10px; }
+
+.tag {
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--border-glow);
+}
+
+.tag.sev-hard { background: rgba(255,77,109,0.15); color: var(--danger); border-color: var(--danger); }
+.tag.sev-easy { background: var(--green-glow); color: var(--green); border-color: var(--green); }
+
+.status-pill {
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pill.active { background: var(--green-glow); color: var(--green); border: 1px solid var(--green); }
+.status-pill.scheduled { background: rgba(255,180,67,0.15); color: var(--warning); border: 1px solid var(--warning); }
+.status-pill.draft { background: var(--bg-elevated); color: var(--text-dim); border: 1px solid var(--border); }
+
+.schedule-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.schedule-row input {
+  width: 100px;
+}
+
+.schedule-btn {
+  background: transparent;
+  color: var(--warning);
+  border: 1px solid var(--warning);
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
+.schedule-btn:hover {
+  box-shadow: 0 0 10px rgba(255,180,67,0.4);
+}
+
+.success-msg { color: var(--green); }
+.error-msg { color: var(--danger); }

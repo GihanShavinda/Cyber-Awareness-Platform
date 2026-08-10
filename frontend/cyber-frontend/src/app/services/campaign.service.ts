@@ -17,4 +17,16 @@ export class CampaignService {
   respond(campaignId: number, action: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${campaignId}/respond`, { action });
   }
+
+  getAll(): Observable<any> {
+    return this.http.get(this.apiUrl);
+  }
+
+  create(campaign: any): Observable<any> {
+    return this.http.post(this.apiUrl, campaign);
+  }
+
+  schedule(id: number, minutesFromNow: number): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${id}/schedule`, { minutesFromNow });
+  }
 }

@@ -1,0 +1,53 @@
+<div class="camp-container">
+  <h2>🎣 Phishing Campaigns</h2>
+
+  <div class="create-form">
+    <h3>Create Campaign</h3>
+    <div class="field">
+      <label for="cname">Name</label>
+      <input id="cname" name="cname" [(ngModel)]="name" placeholder="Campaign name" />
+    </div>
+    <div class="field">
+      <label for="csubject">Email subject</label>
+      <input id="csubject" name="csubject" [(ngModel)]="emailSubject" placeholder="The fake email subject line" />
+    </div>
+    <div class="field">
+      <label for="cbody">Email body</label>
+      <textarea id="cbody" name="cbody" [(ngModel)]="emailBody" rows="3" placeholder="The fake email content"></textarea>
+    </div>
+    <div class="field">
+      <label for="cdiff">Difficulty</label>
+      <select id="cdiff" name="cdiff" [(ngModel)]="difficulty">
+        <option *ngFor="let d of difficulties" [value]="d">{{ d }}</option>
+      </select>
+    </div>
+    <button (click)="create()">Create Campaign</button>
+  </div>
+
+  <p *ngIf="success" class="success-msg">{{ success }}</p>
+  <p *ngIf="error" class="error-msg">{{ error }}</p>
+
+  <h3>All Campaigns</h3>
+  <div class="camp-list">
+    <div *ngFor="let c of campaigns" class="camp-card">
+      <div class="camp-head">
+        <strong>{{ c.name }}</strong>
+        <span class="status-pill" [ngClass]="c.status">{{ c.status }}</span>
+      </div>
+      <div class="camp-subject">{{ c.emailSubject }}</div>
+      <div class="camp-meta">
+        <span class="tag sev-{{ c.difficulty }}">{{ c.difficulty }}</span>
+      </div>
+
+      <div class="schedule-row">
+        <input type="number" min="1"
+               [(ngModel)]="scheduleMinutes[c.id]"
+               name="sched-{{ c.id }}"
+               placeholder="mins"
+               [attr.aria-label]="'Minutes from now for ' + c.name" />
+        <button class="schedule-btn" (click)="scheduleCampaign(c)">⏰ Schedule</button>
+      </div>
+    </div>
+    <p *ngIf="campaigns.length === 0">No campaigns yet.</p>
+  </div>
+</div>
